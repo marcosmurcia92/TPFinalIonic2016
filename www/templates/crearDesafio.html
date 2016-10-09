@@ -1,0 +1,29 @@
+<ion-view title="Crear Desafio" hide-back-button="true" cache-view="false" id="page2">
+    <ion-content padding="true" class="has-header">
+        <form id="crearDesafio-form1" class="list">
+            <label class="item item-input" id="crearDesafio-input1" name="desafioTitle">
+                <span class="input-label">Titulo</span>
+                <input type="text" placeholder="Mi fabuloso desafio">
+            </label>
+            <div class="spacer" style="width: 300px; height: 10px;"></div>
+            <label class="item item-input" id="crearDesafio-textarea1" name="desafioDesc">
+                <span class="input-label">Descripcion</span><textarea placeholder="Apuesto XXX a que..."></textarea>
+            </label>
+            <div class="spacer" style="width: 300px; height: 10px;"></div>
+            <label class="item item-input" id="crearDesafio-input8" name="desafioInicio">
+                <span class="input-label">Fecha Inicio</span>
+                <input type="date" placeholder="">
+            </label>
+            <div class="spacer" style="width: 300px; height: 10px;"></div>
+            <label class="item item-input" id="crearDesafio-input9" name="desafioFin">
+                <span class="input-label">Fecha Fin</span>
+                <input type="date" placeholder="">
+            </label>
+            <div class="spacer" style="width: 300px; height: 10px;"></div>
+            <ion-item class="range range-positive" id="crearDesafio-range2">Apuesta
+                <input type="range" value="50" min="0" max="100" step="1" name="desafioApuesta">
+            </ion-item>
+        </form>
+        <button id="crearDesafio-button2" class="button button-balanced  button-block icon ion-android-send">Generar Desafio</button>
+    </ion-content>
+</ion-view>
