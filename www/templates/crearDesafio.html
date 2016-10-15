@@ -1,6 +1,6 @@
-<ion-view title="Crear Desafio" hide-back-button="true" cache-view="false" id="page2">
-    <ion-content padding="true" class="has-header">
-        <form id="crearDesafio-form1" class="list">
+<ion-view title="Crear Desafio" hide-back-button="true" cache-view="false" id="page3">
+    <ion-content padding="true" style="background: url(img/Background.jpg) no-repeat center;background-size:cover;" class="has-header">
+    	<form id="crearDesafio-form1" class="list">
             <label class="item item-input" id="crearDesafio-input1" name="desafioTitle">
                 <span class="input-label">Titulo</span>
                 <input type="text" placeholder="Mi fabuloso desafio">
@@ -20,10 +20,10 @@
                 <input type="date" placeholder="">
             </label>
             <div class="spacer" style="width: 300px; height: 10px;"></div>
-            <ion-item class="range range-positive" id="crearDesafio-range2">Apuesta
-                <input type="range" value="50" min="0" max="100" step="1" name="desafioApuesta">
+            <ion-item class="range range-positive" id="crearDesafio-range2">Apuesta $0
+                <input type="range" value="0" min="0" max="100" step="1" name="desafioApuesta">
             </ion-item>
         </form>
         <button id="crearDesafio-button2" class="button button-balanced  button-block icon ion-android-send">Generar Desafio</button>
-    </ion-content>
+	</ion-content>
 </ion-view>

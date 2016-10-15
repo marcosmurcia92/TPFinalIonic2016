@@ -10,10 +10,20 @@ angular.module('app.routes', [])
     
   
 
-      .state('desafiosTabs.crearDesafio', {
-    url: '/crear',
+      .state('desafiosTabs.autor', {
+    url: '/autor',
     views: {
       'tab1': {
+        templateUrl: 'templates/autor.html',
+        controller: 'autorCtrl'
+      }
+    }
+  })
+
+  .state('desafiosTabs.crearDesafio', {
+    url: '/crear',
+    views: {
+      'tab2': {
         templateUrl: 'templates/crearDesafio.html',
         controller: 'crearDesafioCtrl'
       }
@@ -23,7 +33,7 @@ angular.module('app.routes', [])
   .state('desafiosTabs.listaDeDesafios', {
     url: '/lista',
     views: {
-      'tab2': {
+      'tab3': {
         templateUrl: 'templates/listaDeDesafios.html',
         controller: 'listaDeDesafiosCtrl'
       }
@@ -33,9 +43,25 @@ angular.module('app.routes', [])
   .state('desafiosTabs.desafiosAceptados', {
     url: '/aceptados',
     views: {
-      'tab3': {
+      'tab4': {
         templateUrl: 'templates/desafiosAceptados.html',
         controller: 'desafiosAceptadosCtrl'
+      }
+    }
+  })
+
+  .state('detallesDesafio', {
+    url: '/lista/desafio',
+    templateUrl: 'templates/detallesDesafio.html',
+    controller: 'detallesDesafioCtrl'
+  })
+
+  .state('desafiosTabs.perfilLoginRegister', {
+    url: '/perfil',
+    views: {
+      'tab5': {
+        templateUrl: 'templates/perfilLoginRegister.html',
+        controller: 'perfilLoginRegisterCtrl'
       }
     }
   })
@@ -43,38 +69,11 @@ angular.module('app.routes', [])
   .state('desafiosTabs', {
     url: '/desafios',
     templateUrl: 'templates/desafiosTabs.html',
+    controller: 'tabsCtrl',
     abstract:true
   })
 
-  .state('login', {
-    url: '/login',
-    templateUrl: 'templates/login.html',
-    controller: 'loginCtrl'
-  })
-
-  .state('register', {
-    url: '/register',
-    templateUrl: 'templates/register.html',
-    controller: 'registerCtrl'
-  })
-
-  .state('autor', {
-    url: '/autor',
-    templateUrl: 'templates/autor.html',
-    controller: 'autorCtrl'
-  })
-
-  .state('desafiosTabs.detallesDesafio', {
-    url: '/lista/desafio',
-    views: {
-      'tab2': {
-        templateUrl: 'templates/detallesDesafio.html',
-        controller: 'detallesDesafioCtrl'
-      }
-    }
-  })
-
-$urlRouterProvider.otherwise('/desafios/lista')
+$urlRouterProvider.otherwise('/desafios/perfil')
 
   
 
