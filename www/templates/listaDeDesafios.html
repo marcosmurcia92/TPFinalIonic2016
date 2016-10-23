@@ -1,8 +1,8 @@
 <ion-view title="Lista de Desafios" hide-back-button="true" cache-view="false" id="page4">
     <ion-content padding="true" style="background: url(img/Background.jpg) no-repeat center;background-size:cover;" class="has-header">
         <ion-list id="listaDeDesafios-list3">
-            <ion-item class="dark" id="listaDeDesafios-list-item7" ui-sref="app.desafiosTabs.detallesDesafio">Titulo
-                <span class="item-note">$9999</span>
+            <ion-item ng-repeat="d in DesafiosDisponibles" class="dark" id="listaDeDesafios-list-item7" ui-sref="desafiosTabs.detallesDesafio">{{d.titulo}}
+                <span class="item-note">${{d.valorApuesta}}</span>
             </ion-item>
      </ion-content>
 </ion-view>

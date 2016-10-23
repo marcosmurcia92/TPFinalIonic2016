@@ -1,11 +1,12 @@
 <ion-view title="{{modalState}}" hide-back-button="true" cache-view="false" id="page7">
     <ion-content padding="true" style="background: url(img/Background.jpg) no-repeat center;background-size:cover;" class="has-header">
         <div id="perfilLoginRegister-container1" ng-if="modalState == 'Perfil'">
-            <h2 id="perfilLoginRegister-heading1" style="color:#000000;text-align:center;">Nombre</h2>
+            <h2 id="perfilLoginRegister-heading1" style="color:#000000;text-align:center;">{{userData.username}}</h2>
             <div>
-                <img src="img/Profile.jpg" width="150px" height="auto" style="display: block; margin-left: auto; margin-right: auto;">
+                <img ng-show= "userData.profile_picture != null" src="{{userData.profile_picture}}" width="150px" height="auto" style="display: block; margin-left: auto; margin-right: auto;">
+                <img ng-show= "userData.profile_picture == null" src="img/Profile.jpg" width="150px" height="auto" style="display: block; margin-left: auto; margin-right: auto;">
             </div>
-            <h3 id="perfilLoginRegister-heading2" style="color:#000000;text-align:justify;">Creditos: $1000</h3>
+            <h3 id="perfilLoginRegister-heading2" style="color:#000000;text-align:justify;">Creditos: ${{userData.credits}}</h3>
             <button id="perfilLoginRegister-button2" class="button button-balanced  button-block">Cargar más crèditos</button>
             <button id="perfilLoginRegister-button1" ng-click="doLogout()" class="button button-assertive  button-block">Desloguear</button>
         </div>
