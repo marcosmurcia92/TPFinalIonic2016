@@ -51,9 +51,9 @@ angular.module('app.routes', [])
   })
 
   .state('detallesDesafio', {
-    url: '/lista/desafio',
+    url: 'desafio/:desId',
     templateUrl: 'templates/detallesDesafio.html',
-    controller: 'detallesDesafioCtrl'
+    controller: 'detallesDesafioCtrl' 
   })
 
   .state('desafiosTabs.perfilLoginRegister', {

@@ -43,6 +43,7 @@ function ($scope, $stateParams,$cordovaInAppBrowser) {
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
 function ($scope,$state ,$stateParams,UsuarioDesafios) {
+
   $scope.$on('$ionicView.loaded', function () {
     if(firebase.auth().currentUser == null){
       $state.go('desafiosTabs.perfilLoginRegister');
@@ -109,18 +110,24 @@ function ($scope,$state, $timeout, $stateParams) {
   desafiosRef.on('child_added', function(snapshot) {
     // code to handle new child.
     $timeout(function(){
-      $scope.DesafiosDisponibles.push(snapshot.val());
+      var desafioId = snapshot.key;
+      var desafioObject = snapshot.val();
+      desafioObject.id = desafioId;
+      console.log(desafioObject);
+      $scope.DesafiosDisponibles.push(desafioObject);
     });
   });
 
-
+  $scope.IrAlDesafio = function(desafio){
+    $state.go('detallesDesafio',{desId : desafio.id});
+  };
 
 }])
 
-.controller('detallesDesafioCtrl', ['$scope','$state', '$timeout', '$timeout', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('detallesDesafioCtrl', ['$scope','$http','$state', '$timeout', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope,$state, $timeout, $stateParams) {
+function ($scope,$http,$state, $timeout, $stateParams) {
 
   $scope.$on('$ionicView.loaded', function () {
     if(firebase.auth().currentUser == null){
@@ -128,6 +135,23 @@ function ($scope,$state, $timeout, $stateParams) {
     }
   });
 
+  $scope.des = {
+    titulo: "DesafioLoco",
+    detalle: "Descripcion del LocoDesafio",
+    fechaInicio: new Date(),
+    fechaFin: new Date(),
+    valorApuesta: 100
+  };
+
+  console.info("PARAMS", $stateParams.desId);
+  firebase.database().ref('desafios/' + $stateParams.desId).once('value', function(snapshot) {
+      var exists = (snapshot.val() != null);
+      console.log(exists);
+      if(exists){
+        $scope.des = snapshot.val();
+      }
+  });
+  
 }])
    
 .controller('desafiosAceptadosCtrl', ['$scope','$state', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
