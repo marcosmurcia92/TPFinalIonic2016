@@ -51,7 +51,7 @@ angular.module('app.routes', [])
   })
 
   .state('detallesDesafio', {
-    url: 'desafio/:desId',
+    url: 'desafio/:desId:backState',
     templateUrl: 'templates/detallesDesafio.html',
     controller: 'detallesDesafioCtrl' 
   })

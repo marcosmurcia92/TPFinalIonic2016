@@ -72,9 +72,9 @@ function ($scope,$state ,$stateParams,UsuarioDesafios) {
       detalle: $scope.nuevoDesafioData.detalle,
       fechaInicio: $scope.nuevoDesafioData.fechaInicio.getTime(),
       fechaFin: $scope.nuevoDesafioData.fechaFin.getTime(),
-      creador: UsuarioDesafios.getUUID(),
+      creador: UsuarioDesafios.getShowData(),
       desafiado: "",
-      estado: "Available",
+      estado: 'Available',
       ganador: "",
       valorApuesta: $scope.nuevoDesafioData.valorApuesta 
     });
@@ -112,22 +112,24 @@ function ($scope,$state, $timeout, $stateParams) {
     $timeout(function(){
       var desafioId = snapshot.key;
       var desafioObject = snapshot.val();
-      desafioObject.id = desafioId;
-      console.log(desafioObject);
-      $scope.DesafiosDisponibles.push(desafioObject);
+      if(desafioObject.estado == 'Available'){
+        desafioObject.id = desafioId;
+        console.log(desafioObject);
+        $scope.DesafiosDisponibles.push(desafioObject);
+      }
     });
   });
 
   $scope.IrAlDesafio = function(desafio){
-    $state.go('detallesDesafio',{desId : desafio.id});
+    $state.go('detallesDesafio',{desId : desafio.id, backState : 'desafiosTabs.listaDeDesafios'});
   };
 
 }])
 
-.controller('detallesDesafioCtrl', ['$scope','$http','$state', '$timeout', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('detallesDesafioCtrl', ['$scope','$http','$state', '$timeout', '$ionicPopup', '$stateParams', 'UsuarioDesafios', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope,$http,$state, $timeout, $stateParams) {
+function ($scope,$http,$state, $timeout, $ionicPopup, $stateParams, UsuarioDesafios) {
 
   $scope.$on('$ionicView.loaded', function () {
     if(firebase.auth().currentUser == null){
@@ -135,12 +137,75 @@ function ($scope,$http,$state, $timeout, $stateParams) {
     }
   });
 
+  $scope.user = UsuarioDesafios;
+  console.info("USUARIO", $scope.user);
+
   $scope.des = {
     titulo: "DesafioLoco",
     detalle: "Descripcion del LocoDesafio",
     fechaInicio: new Date(),
     fechaFin: new Date(),
-    valorApuesta: 100
+    valorApuesta: 100,
+    estado: 'Available'
+  };
+
+  $scope.getFechaInicio = function(){
+    return ($scope.des.fechaInicio.getDate()+1) + "/" + 
+    ($scope.des.fechaInicio.getMonth()+1) + "/" + 
+    ($scope.des.fechaInicio.getFullYear());
+  };
+
+  $scope.getFechaFin = function(){
+    return ($scope.des.fechaFin.getDate()+1) + "/" + 
+    ($scope.des.fechaFin.getMonth()+1) + "/" + 
+    ($scope.des.fechaFin.getFullYear());
+  };
+
+  $scope.GoBack = function(){
+    $state.go($stateParams.backState);
+  };
+
+  $scope.AceptarDesafio = function(){
+    $scope.des.desafiado = UsuarioDesafios.getShowData();
+    $scope.des.estado = 'Accepted';
+
+    //SOBRESCRIBIR DESAFIO
+    firebase.database().ref('desafios/' + $stateParams.desId).update({
+      desafiado : UsuarioDesafios.getShowData(),
+      estado : 'Accepted'
+    },function(error){
+      if(error){
+        var alertPopup = $ionicPopup.alert({
+           title: 'Error',
+           template: error
+         });
+
+         alertPopup.then(function(res) {
+           console.log('Error cerrado');
+         });
+      }else{
+        var alertPopup = $ionicPopup.alert({
+           title: 'Aviso',
+           template: 'DESAFIO ACEPTADO!!'
+         });
+
+         alertPopup.then(function(res) {
+           console.log('Alert de Aceptado cerrado');
+            $state.go('desafiosTabs.desafiosAceptados');
+         });
+      }
+    });
+
+  };
+
+  $scope.CompletarDesafio = function(){
+    //GANADOR ES EL DESAFIANTE
+
+  };
+
+  $scope.FallarDesafio = function(){
+    //GANADOR ES EL CREADOR
+
   };
 
   console.info("PARAMS", $stateParams.desId);
@@ -149,21 +214,46 @@ function ($scope,$http,$state, $timeout, $stateParams) {
       console.log(exists);
       if(exists){
         $scope.des = snapshot.val();
+        $scope.des.fechaInicio = new Date(snapshot.val().fechaInicio);
+        $scope.des.fechaFin = new Date(snapshot.val().fechaFin);
+        $scope.fechaInicioReal = $scope.getFechaInicio();
+        $scope.fechaFinReal = $scope.getFechaFin();
       }
   });
   
 }])
    
-.controller('desafiosAceptadosCtrl', ['$scope','$state', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('desafiosAceptadosCtrl', ['$scope','$state','$timeout', '$stateParams','UsuarioDesafios', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope,$state, $stateParams) {
+function ($scope,$state, $timeout, $stateParams, UsuarioDesafios) {
   $scope.$on('$ionicView.loaded', function () {
     if(firebase.auth().currentUser == null){
       $state.go('desafiosTabs.perfilLoginRegister');
     }
   });
 
+  var desafiosRef = firebase.database().ref("desafios/");
+  $scope.DesafiosDisponibles = [];
+
+  desafiosRef.on('child_added', function(snapshot) {
+    // code to handle new child.
+    $timeout(function(){
+      var desafioId = snapshot.key;
+      var desafioObject = snapshot.val();
+      if(desafioObject.estado == 'Accepted' && 
+        ((desafioObject.creador.userUUID == UsuarioDesafios.getUUID()) || 
+          (desafioObject.desafiado.userUUID == UsuarioDesafios.getUUID()) )){
+        desafioObject.id = desafioId;
+        console.log(desafioObject);
+        $scope.DesafiosDisponibles.push(desafioObject);
+      }
+    });
+  });
+
+  $scope.IrAlDesafio = function(desafio){
+    $state.go('detallesDesafio',{desId : desafio.id, backState : 'desafiosTabs.desafiosAceptados'});
+  };
 }])
    
 .controller('perfilLoginRegisterCtrl', ['$scope', '$stateParams', '$timeout','$ionicPopup', 'UsuarioDesafios', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
@@ -273,7 +363,7 @@ function ($scope, $stateParams, $timeout,$ionicPopup, UsuarioDesafios) {
   $scope.userExistsCallback = function(exists) {
     if (!exists) {
       console.log("Create Firebase Profile");
-      $scope.createUserData();
+      $scope.createUserData(true);
     }else{
       console.log("Get User Data");
       $scope.getCurrentUserData();
@@ -305,13 +395,14 @@ function ($scope, $stateParams, $timeout,$ionicPopup, UsuarioDesafios) {
     });
   };
 
-  $scope.createUserData = function(){
+  $scope.createUserData = function(loginAfterCreate){
     var user = firebase.auth().currentUser;
     var resData = {
       uid: user.uid,
       username: user.displayName,
       email: user.email,
       credits: 1000,
+      esAdmin: "NO",
       profile_picture : user.photoURL
     };
 
@@ -320,28 +411,66 @@ function ($scope, $stateParams, $timeout,$ionicPopup, UsuarioDesafios) {
     $scope.userData = resData;
     UsuarioDesafios.login($scope.userData);
 
-    $timeout(function(){
-      $scope.isLogged = true;
-      $scope.modalState = 'Perfil';
-      console.log($scope.userData);
-    },100);
+
+    if(loginAfterCreate){
+      $timeout(function(){
+        $scope.isLogged = true;
+        $scope.modalState = 'Perfil';
+        console.log($scope.userData);
+      },100);
+    }
+  }
+
+  $scope.createCustomUserData = function(name,mail,uid,photoURL,loginAfterCreate){
+    var resData = {
+      uid: uid,
+      username: name,
+      email: mail,
+      credits: 1000,
+      esAdmin: "NO",
+      profile_picture : photoURL
+    };
+
+    firebase.database().ref('users/' + uid).set(resData);
+
+    $scope.userData = resData;
+    UsuarioDesafios.login($scope.userData);
+
+
+    if(loginAfterCreate){
+      $timeout(function(){
+        $scope.isLogged = true;
+        $scope.modalState = 'Perfil';
+        console.log($scope.userData);
+      },100);
+    }
   }
 
   $scope.doRegister = function(){
       console.info("REGISTER DATA", $scope.registerData);
       firebase.auth().createUserWithEmailAndPassword($scope.registerData.usermail, $scope.registerData.password)
       .then(function(respuesta) {
-        console.info("Success Register",respuesta);
-        console.info("Usuario Actual", firebase.auth().currentUser);
-        firebase.auth().currentUser.updateProfile({
-          displayName: $scope.registerData.userName
-        }).then(function() {
-          // Update successful.
-          console.log("Name Updated");
-        }, function(error) {
-          // An error happened.
-          console.log("Name ERROR: " + error);
-        });
+        var user = firebase.auth().currentUser;
+        console.info("Success Register",$scope.registerData);
+        console.info("Usuario Actual", user);
+        // firebase.auth().currentUser.updateProfile({
+        //   displayName: $scope.registerData.userName
+        // }).then(function() {
+        //   // Update successful.
+        //   console.info("Name Updated", firebase.auth().currentUser);
+        // }, function(error) {
+        //   // An error happened.
+        //   console.log("Name ERROR: " + error);
+        // });
+
+        $scope.createCustomUserData(
+          $scope.registerData.username,
+          $scope.registerData.usermail,
+          user.uid,
+          user.photoURL,
+          false
+        );
+
         if(!respuesta.emailVerified){
           firebase.auth().currentUser.sendEmailVerification().then(function(){
                var alertPopup = $ionicPopup.alert({
@@ -352,6 +481,8 @@ function ($scope, $stateParams, $timeout,$ionicPopup, UsuarioDesafios) {
                alertPopup.then(function(res) {
                  console.log('Alert de Verificacion cerrado');
                });
+
+               $scope.doLogout();
             },function(error){
               console.info("Verification error",error);
             });
