@@ -25,7 +25,7 @@ angular.module('app.services', [])
 			return userName;
 		},
 		getCredits:function(){
-			return userCredits;
+			return (userCredits > 100 ? 100 : userCredits);
 		},
 		getMail:function(){
 			return userMail;
@@ -44,9 +44,33 @@ angular.module('app.services', [])
 			jsonUsuario.userName = userName;
 			jsonUsuario.userMail = userMail;
 			jsonUsuario.userUUID = userUUID;
+			jsonUsuario.userCredits = userCredits;
 			return jsonUsuario;
 		}
 	};
+}])
+
+.service('CreditosSrv', [function($ionicPopup){
+	this.GanarCreditos = function(jugGanador, creditos){
+
+		firebase.database().ref('users/' + jugGanador.userUUID).update({
+			credits : (parseInt(jugGanador.userCredits) + parseInt(creditos))
+		},function(error){
+	      if(error){
+	      	console.info("ERROR: ", error);
+	      }
+	    });
+	};
+
+	this.GastarCreditos = function(jugador, creditos){
+		firebase.database().ref('users/' + jugador.userUUID).update({
+			credits : (parseInt(jugador.userCredits) - parseInt(creditos))
+		},function(error){
+	      if(error){
+	      	console.info("ERROR: ", error);
+	      }
+	    });
+	}
 }])
 
 .service('BlankService', [function(){

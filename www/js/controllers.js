@@ -39,10 +39,10 @@ function ($scope, $stateParams,$cordovaInAppBrowser) {
 
 }])
    
-.controller('crearDesafioCtrl', ['$scope','$state' ,'$stateParams', 'UsuarioDesafios',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('crearDesafioCtrl', ['$scope','$state' ,'$stateParams', 'CreditosSrv' ,'UsuarioDesafios',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope,$state ,$stateParams,UsuarioDesafios) {
+function ($scope,$state ,$stateParams, CreditosSrv, UsuarioDesafios) {
 
   $scope.$on('$ionicView.loaded', function () {
     if(firebase.auth().currentUser == null){
@@ -79,6 +79,8 @@ function ($scope,$state ,$stateParams,UsuarioDesafios) {
       valorApuesta: $scope.nuevoDesafioData.valorApuesta 
     });
 
+    CreditosSrv.GastarCreditos(UsuarioDesafios.getShowData(),$scope.nuevoDesafioData.valorApuesta);
+
     $scope.cleanData();
   }
 
@@ -94,10 +96,10 @@ function ($scope,$state ,$stateParams,UsuarioDesafios) {
 
 }])
    
-.controller('listaDeDesafiosCtrl', ['$scope','$state', '$timeout', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('listaDeDesafiosCtrl', ['$scope','$state', '$timeout', '$stateParams', 'UsuarioDesafios',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope,$state, $timeout, $stateParams) {
+function ($scope,$state, $timeout, $stateParams, UsuarioDesafios) {
   $scope.$on('$ionicView.loaded', function () {
     if(firebase.auth().currentUser == null){
       $state.go('desafiosTabs.perfilLoginRegister');
@@ -112,7 +114,7 @@ function ($scope,$state, $timeout, $stateParams) {
     $timeout(function(){
       var desafioId = snapshot.key;
       var desafioObject = snapshot.val();
-      if(desafioObject.estado == 'Available'){
+      if((desafioObject.estado == 'Available' || UsuarioDesafios.isAdmin())){
         desafioObject.id = desafioId;
         console.log(desafioObject);
         $scope.DesafiosDisponibles.push(desafioObject);
@@ -126,10 +128,10 @@ function ($scope,$state, $timeout, $stateParams) {
 
 }])
 
-.controller('detallesDesafioCtrl', ['$scope','$http','$state', '$timeout', '$ionicPopup', '$stateParams', 'UsuarioDesafios', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('detallesDesafioCtrl', ['$scope','$http','$state', '$timeout', '$ionicPopup', '$stateParams', 'CreditosSrv' ,'UsuarioDesafios', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope,$http,$state, $timeout, $ionicPopup, $stateParams, UsuarioDesafios) {
+function ($scope,$http,$state, $timeout, $ionicPopup, $stateParams, CreditosSrv, UsuarioDesafios) {
 
   $scope.$on('$ionicView.loaded', function () {
     if(firebase.auth().currentUser == null){
@@ -200,12 +202,72 @@ function ($scope,$http,$state, $timeout, $ionicPopup, $stateParams, UsuarioDesaf
 
   $scope.CompletarDesafio = function(){
     //GANADOR ES EL DESAFIANTE
+    $scope.des.ganador = $scope.des.desafiado;
+    $scope.des.estado = 'Finished';
 
+    CreditosSrv.GanarCreditos($scope.des.ganador,$scope.des.valorApuesta);
+
+    //SOBRESCRIBIR DESAFIO
+    firebase.database().ref('desafios/' + $stateParams.desId).update({
+      ganador : $scope.des.desafiado,
+      estado : 'Finished'
+    },function(error){
+      if(error){
+        var alertPopup = $ionicPopup.alert({
+           title: 'Error',
+           template: error
+         });
+
+         alertPopup.then(function(res) {
+           console.log('Error cerrado');
+         });
+      }else{
+        var alertPopup = $ionicPopup.alert({
+           title: 'Aviso',
+           template: 'DESAFIO ACEPTADO!!'
+         });
+
+         alertPopup.then(function(res) {
+           console.log('Alert de Aceptado cerrado');
+            $state.go('desafiosTabs.desafiosAceptados');
+         });
+      }
+    });
   };
 
   $scope.FallarDesafio = function(){
     //GANADOR ES EL CREADOR
+    $scope.des.ganador = $scope.des.desafiado;
+    $scope.des.estado = 'Finished';
 
+    CreditosSrv.GanarCreditos($scope.des.ganador,$scope.des.valorApuesta);
+
+    //SOBRESCRIBIR DESAFIO
+    firebase.database().ref('desafios/' + $stateParams.desId).update({
+      ganador : $scope.des.desafiado,
+      estado : 'Finished'
+    },function(error){
+      if(error){
+        var alertPopup = $ionicPopup.alert({
+           title: 'Error',
+           template: error
+         });
+
+         alertPopup.then(function(res) {
+           console.log('Error cerrado');
+         });
+      }else{
+        var alertPopup = $ionicPopup.alert({
+           title: 'Aviso',
+           template: 'DESAFIO ACEPTADO!!'
+         });
+
+         alertPopup.then(function(res) {
+           console.log('Alert de Aceptado cerrado');
+            $state.go('desafiosTabs.desafiosAceptados');
+         });
+      }
+    });
   };
 
   console.info("PARAMS", $stateParams.desId);
