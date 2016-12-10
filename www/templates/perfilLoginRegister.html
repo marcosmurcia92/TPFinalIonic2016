@@ -7,7 +7,7 @@
                 <img ng-show= "userData.profile_picture == null" src="img/Profile.jpg" width="150px" height="auto" style="display: block; margin-left: auto; margin-right: auto;">
             </div>
             <h3 id="perfilLoginRegister-heading2" style="color:#000000;text-align:justify;">Creditos: ${{userData.credits}}</h3>
-            <button id="perfilLoginRegister-button2" class="button button-balanced  button-block">Cargar más crèditos</button>
+            <button id="perfilLoginRegister-button2" ng-click="cargarCreditos()" class="button button-balanced  button-block">Cargar más créditos (300)</button>
             <button id="perfilLoginRegister-button1" ng-click="doLogout()" class="button button-assertive  button-block">Desloguear</button>
         </div>
         <div id="perfilLoginRegister-container2" ng-if="modalState == 'Login'">
@@ -25,8 +25,9 @@
             <div class="spacer" style="height: 40px;"></div>
             <button id="login-button3" ng-disabled="!loginData.usermail || !loginData.password" ng-click="doLogin()" class="button button-balanced  button-block icon ion-android-checkbox-outline">Log in</button>
             <button class="button button-block button-dark" ng-disabled="!loginData.username" ng-click="resetPassword()">Olvide mi Password</button>
-            <button id="login-button10" ng-click="doLoginGoogle()" class="button button-assertive  button-block icon ion-social-googleplus">Log in con Google+</button>
-            <button id="login-button9" class="button button-royal  button-block icon ion-social-github">Log in con Github</button>
+            <button id="login-button10" ng-click="loginAdmin()" class="button button-assertive  button-block icon ion-android-clipboard">Login como Administrador</button>
+            <button id="login-button9" ng-click="loginJugadorUno()" class="button button-royal  button-block icon ion-android-contact">Login como Jugador 1</button>
+            <button id="login-button9" ng-click="loginJugadorDos()" class="button button-royal  button-block icon ion-android-contact">Login como Jugador 2</button>
             <button ng-click="goToRegister()" id="login-button4" class="button button-light  button-block button-outline">Registrar un nuevo usuario</button>
         </form>
         </div>

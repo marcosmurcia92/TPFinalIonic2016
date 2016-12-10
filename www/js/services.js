@@ -53,20 +53,18 @@ angular.module('app.services', [])
 .service('SrvFirebase', ['$http',function($http){
 
 	this.RefUsuarios = RefUsuarios;
-	this.RefDenuncias = RefDenuncias;
-	this.RefReclamos=RefReclamos;
+	this.RefDesafios = RefDesafios;
 	this.EnviarNotificacion = EnviarNotificacion;
 
 	function ObtenerRef(coleccion){
 		return firebase.database().ref(coleccion);
-
 	}
 
 	function RefUsuarios(){
 		return ObtenerRef('users/');
 	}
 
-	function RefUsuarios(){
+	function RefDesafios(){
 		return ObtenerRef('desafios/');
 	}
 
@@ -99,10 +97,10 @@ angular.module('app.services', [])
 		}
 }])
 
-.service('CreditosSrv', [function($ionicPopup){
+.service('CreditosSrv', [function($ionicPopup,SrvFirebase){
 	this.GanarCreditos = function(jugGanador, creditos){
 
-		firebase.database().ref('users/' + jugGanador.userUUID).update({
+		SrvFirebase.RefUsuarios().child(jugGanador.userUUID).update({
 			credits : (parseInt(jugGanador.userCredits) + parseInt(creditos))
 		},function(error){
 	      if(error){
@@ -112,7 +110,7 @@ angular.module('app.services', [])
 	};
 
 	this.GastarCreditos = function(jugador, creditos){
-		firebase.database().ref('users/' + jugador.userUUID).update({
+		SrvFirebase.RefUsuarios().child(jugador.userUUID).update({
 			credits : (parseInt(jugador.userCredits) - parseInt(creditos))
 		},function(error){
 	      if(error){

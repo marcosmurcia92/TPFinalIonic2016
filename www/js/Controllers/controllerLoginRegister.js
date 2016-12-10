@@ -9,10 +9,10 @@
 
 angular.module('app.controllers')
    
-.controller('perfilLoginRegisterCtrl', ['$scope', '$stateParams', '$timeout','$ionicPopup', 'UsuarioDesafios', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('perfilLoginRegisterCtrl', ['$scope', '$stateParams', '$timeout','$ionicPopup', 'UsuarioDesafios','SrvFirebase','CreditosSrv', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams, $timeout,$ionicPopup, UsuarioDesafios) {
+function ($scope, $stateParams, $timeout,$ionicPopup, UsuarioDesafios,SrvFirebase,CreditosSrv) {
 
   $scope.userData = {
     username: UsuarioDesafios.getName(),
@@ -125,7 +125,7 @@ function ($scope, $stateParams, $timeout,$ionicPopup, UsuarioDesafios) {
 
   $scope.checkIfUserExists = function(){
     var user = firebase.auth().currentUser;
-    firebase.database().ref('users/' + user.uid).once('value', function(snapshot) {
+    SrvFirebase.RefUsuarios().child(user.uid).once('value', function(snapshot) {
       var exists = (snapshot.val() != null);
       console.log(exists);
       $scope.userExistsCallback(exists);
@@ -134,7 +134,7 @@ function ($scope, $stateParams, $timeout,$ionicPopup, UsuarioDesafios) {
 
   $scope.getCurrentUserData = function(){
     var user = firebase.auth().currentUser;
-    firebase.database().ref('users/' + user.uid).once('value', function(snapshot) {
+    SrvFirebase.RefUsuarios().child(user.uid).once('value', function(snapshot) {
       var exists = (snapshot.val() != null);
       console.info("User Snapshot: " , snapshot.val());
       $scope.userData = snapshot.val();
@@ -159,7 +159,7 @@ function ($scope, $stateParams, $timeout,$ionicPopup, UsuarioDesafios) {
       profile_picture : user.photoURL
     };
 
-    firebase.database().ref('users/' + user.uid).set(resData);
+    SrvFirebase.RefUsuarios().child(user.uid).set(resData);
 
     $scope.userData = resData;
     UsuarioDesafios.login($scope.userData);
@@ -184,7 +184,7 @@ function ($scope, $stateParams, $timeout,$ionicPopup, UsuarioDesafios) {
       profile_picture : photoURL
     };
 
-    firebase.database().ref('users/' + uid).set(resData);
+    SrvFirebase.RefUsuarios().child(uid).set(resData);
 
     $scope.userData = resData;
     UsuarioDesafios.login($scope.userData);
@@ -290,6 +290,56 @@ function ($scope, $stateParams, $timeout,$ionicPopup, UsuarioDesafios) {
   	$scope.loginData.password= "";
       $scope.modalState = 'Login';
     },100);
+  };
+
+  $scope.loginAdmin = function(){
+    $scope.loginData.usermail = "marcosmurcia92@gmail.com";
+    $scope.loginData.password = "firebase123";
+  }
+
+  $scope.loginJugadorUno = function(){
+    $scope.loginData.usermail = "juan_banana96@hotmail.com";
+    $scope.loginData.password = "firebase123";
+  }
+
+  $scope.loginJugadorDos = function(){
+    $scope.loginData.usermail = "mark_facu@hotmail.com";
+    $scope.loginData.password = "firebase123";
+  }
+
+  $scope.cargarCreditos = function(){
+    $cordovaBarcodeScanner
+          .scan()
+          .then(function(barcodeData) {
+            // Success! Barcode data is here
+            console.info("CORRECTO",barcodeData);
+            // var alertPopup = $ionicPopup.alert({
+            //    title: 'Correcto',
+            //    template: barcodeData.text
+            //  });
+            if(barcodeData.text == "cargar_creditos_300"){
+              CreditosSrv.GanarCreditos(UsuarioDesafios.getShowData(),300);
+              var alertPopup = $ionicPopup.alert({
+               title: 'Correcto',
+               template: "SE CARGARAN 300 CREDITOS A TU CUENTA"
+             });
+              $scope.getCurrentUserData();
+            }
+
+             // alertPopup.then(function(res) {
+             //   console.log('Correcto cerrado');
+             // });
+          }, function(error) {
+            // An error occurred
+            var alertPopup = $ionicPopup.alert({
+               title: 'Error',
+               template: error
+             });
+
+             alertPopup.then(function(res) {
+               console.log('Error cerrado');
+             });
+          });
   };
 
 }]);

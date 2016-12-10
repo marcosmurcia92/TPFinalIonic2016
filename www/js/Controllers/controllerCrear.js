@@ -9,10 +9,10 @@
 
 angular.module('app.controllers')
    
-.controller('crearDesafioCtrl', ['$scope','$state' ,'$stateParams', 'CreditosSrv' ,'UsuarioDesafios',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('crearDesafioCtrl', ['$scope','$state' ,'$stateParams','$ionicPopup', 'CreditosSrv' ,'UsuarioDesafios', 'SrvFirebase',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope,$state ,$stateParams, CreditosSrv, UsuarioDesafios) {
+function ($scope,$state ,$stateParams,$ionicPopup, CreditosSrv, UsuarioDesafios,SrvFirebase) {
 
   $scope.$on('$ionicView.loaded', function () {
     if(firebase.auth().currentUser == null){
@@ -36,7 +36,7 @@ function ($scope,$state ,$stateParams, CreditosSrv, UsuarioDesafios) {
   }
 
   $scope.createDesafio = function(){
-    var desafiosRef = firebase.database().ref("desafios/");
+    var desafiosRef = SrvFirebase.RefDesafios();
     desafiosRef.push({
       titulo: $scope.nuevoDesafioData.titulo,
       detalle: $scope.nuevoDesafioData.detalle,
@@ -47,11 +47,17 @@ function ($scope,$state ,$stateParams, CreditosSrv, UsuarioDesafios) {
       estado: 'Available',
       ganador: "",
       valorApuesta: $scope.nuevoDesafioData.valorApuesta 
+    },function(error){
+      if(error){
+
+      }else{
+        SrvFirebase.EnviarNotificacion();
+        CreditosSrv.GastarCreditos(UsuarioDesafios.getShowData(),$scope.nuevoDesafioData.valorApuesta);
+        $scope.cleanData();
+      }
     });
 
-    CreditosSrv.GastarCreditos(UsuarioDesafios.getShowData(),$scope.nuevoDesafioData.valorApuesta);
-
-    $scope.cleanData();
+    
   }
 
   $scope.cleanData = function(){

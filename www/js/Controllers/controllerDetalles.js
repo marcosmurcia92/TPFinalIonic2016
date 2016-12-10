@@ -9,10 +9,10 @@
 
 angular.module('app.controllers')
 
-.controller('detallesDesafioCtrl', ['$scope','$http','$state', '$timeout', '$ionicPopup', '$stateParams', 'CreditosSrv' ,'UsuarioDesafios', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('detallesDesafioCtrl', ['$scope','$http','$state', '$timeout', '$ionicPopup', '$stateParams', 'CreditosSrv' ,'UsuarioDesafios','SrvFirebase', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope,$http,$state, $timeout, $ionicPopup, $stateParams, CreditosSrv, UsuarioDesafios) {
+function ($scope,$http,$state, $timeout, $ionicPopup, $stateParams, CreditosSrv, UsuarioDesafios,SrvFirebase) {
 
   $scope.$on('$ionicView.loaded', function () {
     if(firebase.auth().currentUser == null){
@@ -55,7 +55,7 @@ function ($scope,$http,$state, $timeout, $ionicPopup, $stateParams, CreditosSrv,
     CreditosSrv.GastarCreditos(UsuarioDesafios.getShowData(),$scope.des.valorApuesta);
 
     //SOBRESCRIBIR DESAFIO
-    firebase.database().ref('desafios/' + $stateParams.desId).update({
+    SrvFirebase.RefDesafios.child($stateParams.desId).update({
       desafiado : UsuarioDesafios.getShowData(),
       estado : 'Accepted'
     },function(error){
@@ -91,7 +91,7 @@ function ($scope,$http,$state, $timeout, $ionicPopup, $stateParams, CreditosSrv,
     CreditosSrv.GanarCreditos($scope.des.ganador,$scope.des.valorApuesta * 2);
 
     //SOBRESCRIBIR DESAFIO
-    firebase.database().ref('desafios/' + $stateParams.desId).update({
+    SrvFirebase.RefDesafios.child($stateParams.desId).update({
       ganador : $scope.des.desafiado,
       estado : 'Finished'
     },function(error){
@@ -126,7 +126,7 @@ function ($scope,$http,$state, $timeout, $ionicPopup, $stateParams, CreditosSrv,
     CreditosSrv.GanarCreditos($scope.des.ganador,$scope.des.valorApuesta * 2);
 
     //SOBRESCRIBIR DESAFIO
-    firebase.database().ref('desafios/' + $stateParams.desId).update({
+    SrvFirebase.RefDesafios.child($stateParams.desId).update({
       ganador : $scope.des.creador,
       estado : 'Finished'
     },function(error){
@@ -154,7 +154,7 @@ function ($scope,$http,$state, $timeout, $ionicPopup, $stateParams, CreditosSrv,
   };
 
   console.info("PARAMS", $stateParams.desId);
-  firebase.database().ref('desafios/' + $stateParams.desId).once('value', function(snapshot) {
+  SrvFirebase.RefDesafios.child($stateParams.desId).once('value', function(snapshot) {
       var exists = (snapshot.val() != null);
       console.log(exists);
       if(exists){
