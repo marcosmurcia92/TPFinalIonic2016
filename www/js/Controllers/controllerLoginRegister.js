@@ -9,10 +9,10 @@
 
 angular.module('app.controllers')
    
-.controller('perfilLoginRegisterCtrl', ['$scope', '$stateParams', '$timeout','$ionicPopup', 'UsuarioDesafios','SrvFirebase','CreditosSrv', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('perfilLoginRegisterCtrl', ['$scope', '$stateParams', '$timeout','$ionicPopup', 'UsuarioDesafios','SrvFirebase','CreditosSrv','$cordovaBarcodeScanner', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams, $timeout,$ionicPopup, UsuarioDesafios,SrvFirebase,CreditosSrv) {
+function ($scope, $stateParams, $timeout,$ionicPopup, UsuarioDesafios,SrvFirebase,CreditosSrv,$cordovaBarcodeScanner) {
 
   $scope.userData = {
     username: UsuarioDesafios.getName(),
@@ -125,7 +125,7 @@ function ($scope, $stateParams, $timeout,$ionicPopup, UsuarioDesafios,SrvFirebas
 
   $scope.checkIfUserExists = function(){
     var user = firebase.auth().currentUser;
-    SrvFirebase.RefUsuarios().child(user.uid).once('value', function(snapshot) {
+    SrvFirebase.RefUsuarios(user.uid).once('value', function(snapshot) {
       var exists = (snapshot.val() != null);
       console.log(exists);
       $scope.userExistsCallback(exists);
@@ -134,7 +134,7 @@ function ($scope, $stateParams, $timeout,$ionicPopup, UsuarioDesafios,SrvFirebas
 
   $scope.getCurrentUserData = function(){
     var user = firebase.auth().currentUser;
-    SrvFirebase.RefUsuarios().child(user.uid).once('value', function(snapshot) {
+    SrvFirebase.RefUsuarios(user.uid).once('value', function(snapshot) {
       var exists = (snapshot.val() != null);
       console.info("User Snapshot: " , snapshot.val());
       $scope.userData = snapshot.val();
@@ -159,7 +159,7 @@ function ($scope, $stateParams, $timeout,$ionicPopup, UsuarioDesafios,SrvFirebas
       profile_picture : user.photoURL
     };
 
-    SrvFirebase.RefUsuarios().child(user.uid).set(resData);
+    SrvFirebase.RefUsuarios(user.uid).set(resData);
 
     $scope.userData = resData;
     UsuarioDesafios.login($scope.userData);
@@ -184,7 +184,7 @@ function ($scope, $stateParams, $timeout,$ionicPopup, UsuarioDesafios,SrvFirebas
       profile_picture : photoURL
     };
 
-    SrvFirebase.RefUsuarios().child(uid).set(resData);
+    SrvFirebase.RefUsuarios(uid).set(resData);
 
     $scope.userData = resData;
     UsuarioDesafios.login($scope.userData);

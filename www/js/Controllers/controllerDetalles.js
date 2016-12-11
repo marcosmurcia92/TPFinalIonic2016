@@ -55,7 +55,7 @@ function ($scope,$http,$state, $timeout, $ionicPopup, $stateParams, CreditosSrv,
     CreditosSrv.GastarCreditos(UsuarioDesafios.getShowData(),$scope.des.valorApuesta);
 
     //SOBRESCRIBIR DESAFIO
-    SrvFirebase.RefDesafios.child($stateParams.desId).update({
+    SrvFirebase.RefDesafios($stateParams.desId).update({
       desafiado : UsuarioDesafios.getShowData(),
       estado : 'Accepted'
     },function(error){
@@ -91,7 +91,7 @@ function ($scope,$http,$state, $timeout, $ionicPopup, $stateParams, CreditosSrv,
     CreditosSrv.GanarCreditos($scope.des.ganador,$scope.des.valorApuesta * 2);
 
     //SOBRESCRIBIR DESAFIO
-    SrvFirebase.RefDesafios.child($stateParams.desId).update({
+    SrvFirebase.RefDesafios($stateParams.desId).update({
       ganador : $scope.des.desafiado,
       estado : 'Finished'
     },function(error){
@@ -126,7 +126,7 @@ function ($scope,$http,$state, $timeout, $ionicPopup, $stateParams, CreditosSrv,
     CreditosSrv.GanarCreditos($scope.des.ganador,$scope.des.valorApuesta * 2);
 
     //SOBRESCRIBIR DESAFIO
-    SrvFirebase.RefDesafios.child($stateParams.desId).update({
+    SrvFirebase.RefDesafios($stateParams.desId).update({
       ganador : $scope.des.creador,
       estado : 'Finished'
     },function(error){
@@ -154,7 +154,7 @@ function ($scope,$http,$state, $timeout, $ionicPopup, $stateParams, CreditosSrv,
   };
 
   console.info("PARAMS", $stateParams.desId);
-  SrvFirebase.RefDesafios.child($stateParams.desId).once('value', function(snapshot) {
+  SrvFirebase.RefDesafios($stateParams.desId).once('value', function(snapshot) {
       var exists = (snapshot.val() != null);
       console.log(exists);
       if(exists){

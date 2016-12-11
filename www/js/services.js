@@ -60,12 +60,20 @@ angular.module('app.services', [])
 		return firebase.database().ref(coleccion);
 	}
 
-	function RefUsuarios(){
-		return ObtenerRef('users/');
+	function RefUsuarios(child){
+		if(child){
+			return ObtenerRef('users/'+child);
+		}else{
+			return ObtenerRef('users/');
+		}
 	}
 
-	function RefDesafios(){
-		return ObtenerRef('desafios/');
+	function RefDesafios(child){
+		if(child){
+			return ObtenerRef('desafios/'+child);
+		}else{
+			return ObtenerRef('desafios/');
+		}
 	}
 
 	function EnviarNotificacion(){
@@ -94,29 +102,44 @@ angular.module('app.services', [])
 	        }
 	    }
 	    http.send(params);
-		}
-}])
+	}
+}]) 
 
-.service('CreditosSrv', [function($ionicPopup,SrvFirebase){
+.service('CreditosSrv', ['$ionicPopup','SrvFirebase',function($ionicPopup,SrvFirebase){
 	this.GanarCreditos = function(jugGanador, creditos){
 
-		SrvFirebase.RefUsuarios().child(jugGanador.userUUID).update({
-			credits : (parseInt(jugGanador.userCredits) + parseInt(creditos))
-		},function(error){
-	      if(error){
-	      	console.info("ERROR: ", error);
-	      }
-	    });
+		var intCreditos = parseInt(creditos);
+
+		SrvFirebase.RefUsuarios().child(jugGanador.userUUID).once('value',function(snapshot){
+
+			var newCredits = snapshot.val().credits + intCreditos;
+
+			snapshot.ref.update({
+				credits : newCredits
+			},function(error){
+		      if(error){
+		      	console.info("ERROR: ", error);
+		      }
+		    });
+		});
 	};
 
 	this.GastarCreditos = function(jugador, creditos){
-		SrvFirebase.RefUsuarios().child(jugador.userUUID).update({
-			credits : (parseInt(jugador.userCredits) - parseInt(creditos))
-		},function(error){
-	      if(error){
-	      	console.info("ERROR: ", error);
-	      }
-	    });
+
+		var intCreditos = parseInt(creditos);
+
+		SrvFirebase.RefUsuarios().child(jugador.userUUID).once('value',function(snapshot){
+
+			var newCredits = snapshot.val().credits - intCreditos;
+
+			snapshot.ref.update({
+				credits : newCredits
+			},function(error){
+		      if(error){
+		      	console.info("ERROR: ", error);
+		      }
+		    });
+		});
 	}
 }])
 
