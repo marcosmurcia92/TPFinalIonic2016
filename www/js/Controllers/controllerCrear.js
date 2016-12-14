@@ -30,6 +30,13 @@ function ($scope,$state ,$stateParams,$ionicPopup, CreditosSrv, UsuarioDesafios,
 
   $scope.maxCredits = UsuarioDesafios.getCredits();
 
+  $scope.gridSelect = "";
+
+  $scope.RadioButtonClick = function(but){
+    console.log(but);
+    $scope.gridSelect = but;
+  }
+
   $scope.updateTextArea = function(id) {
     var element = document.getElementById(id);
     element.style.height =  element.scrollHeight + "px";

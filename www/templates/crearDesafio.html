@@ -5,11 +5,11 @@
                 <span class="input-label">Titulo</span>
                 <input type="text" ng-model="nuevoDesafioData.titulo" placeholder="Mi fabuloso desafio" required>
             </label>
-            <div class="spacer" style="width: 300px; height: 10px;"></div>
+            <!-- <div class="spacer" style="width: 300px; height: 10px;"></div>
             <label class="item item-input" id="crearDesafio-textarea1" name="desafioDesc">
                 <span class="input-label">Detalle</span>
                 <textarea id="detalleArea" ng-model="nuevoDesafioData.detalle" ng-change="updateTextArea('detalleArea')" placeholder="Apuesto XXX a que..." required></textarea>
-            </label>
+            </label> -->
             <div class="spacer" style="width: 300px; height: 10px;"></div>
             <label class="item item-input" id="crearDesafio-input8" name="desafioInicio">
                 <span class="input-label">Fecha Inicio</span>
@@ -24,6 +24,59 @@
             <ion-item class="range range-positive" id="crearDesafio-range2">Apuesta ${{nuevoDesafioData.valorApuesta}}
                 <input type="range" min="0" max="100" step="1" ng-model="nuevoDesafioData.valorApuesta" name="desafioApuesta" required>
             </ion-item>
+            <div class="spacer" style="width: 300px; height: 10px;"></div>
+            <div id="gridWrapper">
+                    <div class="flipBtnWrapper">
+                        <input type="checkbox" class="flipBtn_checkbox" ng-model="gridSelect" ng-true-value="'TL'" ng-false-value=""/>
+                        <div class="flipBtn demo3">
+                          <div class="flipBtn_face flipBtn_back demo3">
+                            <h3 align=center></h3>
+                            <H2 align=center></H2>
+                          </div>
+                          <div class="flipBtn_face flipBtn_mid demo3">
+                          </div>
+                          <div class="flipBtn_face flipBtn_front demo3">
+                          </div>
+                        </div>
+                    </div>
+                    <div class="flipBtnWrapper">
+                        <input type="checkbox" class="flipBtn_checkbox" ng-model="gridSelect" ng-true-value="'TR'" ng-false-value="" />
+                        <div class="flipBtn demo3">
+                          <div class="flipBtn_face flipBtn_back demo3">
+                            <h3 align=center></h3>
+                            <H2 align=center></H2>
+                          </div>
+                          <div class="flipBtn_face flipBtn_mid demo3">
+                          </div>
+                          <div class="flipBtn_face flipBtn_front demo3">
+                          </div>
+                        </div>
+                     </div>
+            </div>
+            <div id="gridWrapper">
+                    <div class="flipBtnWrapper">
+                        <input type="checkbox" class="flipBtn_checkbox" ng-model="gridSelect" ng-true-value="'BL'" ng-false-value=""/>
+                        <div class="flipBtn demo3">
+                          <div class="flipBtn_face flipBtn_back demo3">
+                            <h3 align=center></h3>
+                            <H2 align=center></H2>
+                          </div>
+                          <div class="flipBtn_face flipBtn_mid demo3"></div>
+                          <div class="flipBtn_face flipBtn_front demo3"></div>
+                        </div>
+                      </div>
+                    <div class="flipBtnWrapper">
+                        <input type="checkbox" class="flipBtn_checkbox" ng-model="gridSelect" ng-true-value="'BR'" ng-false-value=""/>
+                        <div class="flipBtn demo3">
+                          <div class="flipBtn_face flipBtn_back demo3">
+                            <h3 align=center></h3>
+                            <H2 align=center></H2>
+                          </div>
+                          <div class="flipBtn_face flipBtn_mid demo3"></div>
+                          <div class="flipBtn_face flipBtn_front demo3"></div>
+                        </div>
+                    </div>
+            </div>
         </form>
         <button id="crearDesafio-button2" ng-disabled="(nuevoDesafioData.titulo == '' || nuevoDesafioData.detalle == '' || nuevoDesafioData.valorApuesta == 0)" ng-click="createDesafio()" class="button button-balanced  button-block icon ion-android-send">Generar Desafio</button>
 	</ion-content>
