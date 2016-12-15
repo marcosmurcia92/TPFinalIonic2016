@@ -20,19 +20,13 @@ function ($scope,$state ,$stateParams,$ionicPopup, CreditosSrv, UsuarioDesafios,
     }
   });
 
-  $scope.nuevaBatallaData = {
-    titulo: "BatallaNavalPlaceHolder",
+  $scope.nuevoDesafioData = {
+    titulo: "DesafioPlaceHolder",
+    detalle: "ESTA ES UNA descripcion de Desafio!!",
     fechaInicio: new Date("13/10/2016"),
     fechaFin: new Date("29/10/2016"),
     valorApuesta: 50
   };
-
-  $scope.gridSelect = "";
-
-  $scope.RadioButtonClick = function(but){
-    console.log(but);
-    $scope.gridSelect = but;
-  }
 
   $scope.maxCredits = UsuarioDesafios.getCredits();
 
@@ -42,56 +36,38 @@ function ($scope,$state ,$stateParams,$ionicPopup, CreditosSrv, UsuarioDesafios,
   }
 
   $scope.createDesafio = function(){
-    var batallasRef = SrvFirebase.RefBatallas();
-    batallasRef.push({
-      titulo: $scope.nuevaBatallaData.titulo,
-      fechaInicio: $scope.nuevaBatallaData.fechaInicio.getTime(),
-      fechaFin: $scope.nuevaBatallaData.fechaFin.getTime(),
+    var desafiosRef = SrvFirebase.RefDesafios();
+    desafiosRef.push({
+      titulo: $scope.nuevoDesafioData.titulo,
+      detalle: $scope.nuevoDesafioData.detalle,
+      fechaInicio: $scope.nuevoDesafioData.fechaInicio.getTime(),
+      fechaFin: $scope.nuevoDesafioData.fechaFin.getTime(),
       creador: UsuarioDesafios.getShowData(),
       desafiado: "",
       estado: 'Available',
-      turno: "C",
       ganador: "",
-      valorApuesta: $scope.nuevaBatallaData.valorApuesta,
-      tlSlot: {
-        estado: "Oculto",
-        duenio: ($scope.gridSelect == "TL" ? UsuarioDesafios.getShowData() : "Vacio"),
-        duenio2: "Vacio"
-      },
-      trSlot: {
-        estado: "Oculto",
-        duenio: ($scope.gridSelect == "TR" ? UsuarioDesafios.getShowData() : "Vacio"),
-        duenio2: "Vacio"
-      },
-      blSlot: {
-        estado: "Oculto",
-        duenio: ($scope.gridSelect == "BL" ? UsuarioDesafios.getShowData() : "Vacio"),
-        duenio2: "Vacio"
-      },
-      brSlot: {
-        estado: "Oculto",
-        duenio: ($scope.gridSelect == "BR" ? UsuarioDesafios.getShowData() : "Vacio"),
-        duenio2: "Vacio"
-      }
+      valorApuesta: $scope.nuevoDesafioData.valorApuesta 
     },function(error){
       if(error){
 
       }else{
         SrvFirebase.EnviarNotificacion();
-        CreditosSrv.GastarCreditos(UsuarioDesafios.getShowData(),$scope.nuevaBatallaData.valorApuesta);
+        CreditosSrv.GastarCreditos(UsuarioDesafios.getShowData(),$scope.nuevoDesafioData.valorApuesta);
         $scope.cleanData();
       }
     });
+
+    
   }
 
   $scope.cleanData = function(){
-    $scope.nuevaBatallaData = {
+    $scope.nuevoDesafioData = {
       titulo: "",
+      detalle: "",
       fechaInicio: new Date(),
       fechaFin: new Date(),
       valorApuesta: 0
     };
-    $scope.gridSelect = "";
   };
 
 }]);

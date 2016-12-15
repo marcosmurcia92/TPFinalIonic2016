@@ -24,104 +24,13 @@ function ($scope,$http,$state, $timeout, $ionicPopup, $stateParams, CreditosSrv,
   console.info("USUARIO", $scope.user);
 
   $scope.des = {
-    titulo: "DesafioEjemplo",
+    titulo: "DesafioLoco",
+    detalle: "Descripcion del LocoDesafio",
     fechaInicio: new Date(),
     fechaFin: new Date(),
-    creador: {
-      userName: "Pepe Perez"
-    },
-    desafiado: {
-      userName: "Lopez Lopez"
-    },
-    estado: 'Available',
-    turno: "C",
-    ganador: "",
-    valorApuesta: 200,
-    tlSlot: {
-      estado: "Oculto",
-      duenio: "Vacio",
-      duenio2: "Vacio"
-    },
-    trSlot: {
-      estado: "Oculto",
-      duenio: "Vacio",
-      duenio2: "Vacio"
-    },
-    blSlot: {
-      estado: "Oculto",
-      duenio: "Vacio",
-      duenio2: "Vacio"
-    },
-    brSlot: {
-      estado: "Oculto",
-      duenio: "Vacio",
-      duenio2: "Vacio"
-    }
+    valorApuesta: 100,
+    estado: 'Available'
   };
-
-  $scope.newSelect = "";
-
-  $scope.RadioButtonClick = function(but){
-    console.log(but);
-
-    $scope.newSelect = but;
-    switch (but){
-      case 'TL':
-        $scope.des.tlSlot.estado = "Visible";
-        if($scope.des.tlSlot.duenio != "Vacio"){
-          $timeout(function(){
-            alert("Descubrio a " + $scope.des.tlSlot.duenio.userName);
-          },500);
-        }
-        if($scope.des.tlSlot.duenio2 != "Vacio"){
-          $timeout(function(){
-            alert("Descubrio a " + $scope.des.tlSlot.duenio2.userName);
-          },500);
-        }
-        break;
-      case 'TR':
-        $scope.des.trSlot.estado = "Visible";
-        if($scope.des.trSlot.duenio != "Vacio"){
-          $timeout(function(){
-            alert("Descubrio a " + $scope.des.trSlot.duenio.userName);
-          },500);
-        }
-        if($scope.des.trSlot.duenio2 != "Vacio"){
-          $timeout(function(){
-            alert("Descubrio a " + $scope.des.trSlot.duenio2.userName);
-          },500);
-        }
-        break;
-      case 'BL':
-        $scope.des.blSlot.estado = "Visible";
-        if($scope.des.blSlot.duenio != "Vacio"){
-          $timeout(function(){
-            alert("Descubrio a " + $scope.des.blSlot.duenio.userName);
-          },500);
-        }
-        if($scope.des.blSlot.duenio2 != "Vacio"){
-          $timeout(function(){
-            alert("Descubrio a " + $scope.des.blSlot.duenio2.userName);
-          },500);
-        }
-        break;
-      case 'BR':
-        $scope.des.brSlot.estado = "Visible";
-        if($scope.des.brSlot.duenio != "Vacio"){
-          $timeout(function(){
-            alert("Descubrio a " + $scope.des.brSlot.duenio.userName);
-          },500);
-        }
-        if($scope.des.brSlot.duenio2 != "Vacio"){
-          $timeout(function(){
-            alert("Descubrio a " + $scope.des.brSlot.duenio2.userName);
-          },500);
-        }
-        break;
-      default:
-        break;
-    }
-  }
 
   $scope.getFechaInicio = function(){
     return ($scope.des.fechaInicio.getDate()+1) + "/" + 

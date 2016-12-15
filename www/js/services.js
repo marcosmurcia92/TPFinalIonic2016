@@ -76,6 +76,14 @@ angular.module('app.services', [])
 		}
 	}
 
+	function RefBatallas(child){
+		if(child){
+			return ObtenerRef('batallas/'+child);
+		}else{
+			return ObtenerRef('batallas/');
+		}
+	}
+
 	function EnviarNotificacion(){
 		var http = new XMLHttpRequest();
     	var url =  'https://fcm.googleapis.com/fcm/send';

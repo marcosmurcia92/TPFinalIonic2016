@@ -129,12 +129,14 @@ a:link{
 /* Demo No 4 */
 
 .flipBtn_front.demo4{
-	background-image: url("../img/ionic3.png"),  
+  background-image: url("../img/ionic3.png"), 
   linear-gradient(#ff9900 50%, #ffd699);
   background-size: 100%;
 }
 .flipBtn_back.demo4{
-	background-image:  url("../img/ionic2.png"), linear-gradient(#FF6366 50%, #FEA56E);
+  background-image: url("../img/ionic3.png"), 
+  linear-gradient(#FF6366 50%, #FEA56E);
+  background-size: 100%;
 }
 .flipBtn_mid.demo4{
   width: 20px;

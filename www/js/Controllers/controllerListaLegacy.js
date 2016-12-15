@@ -19,7 +19,7 @@ function ($scope,$state, $timeout, $stateParams, UsuarioDesafios,SrvFirebase) {
     }
   });
 
-  var desafiosRef = SrvFirebase.RefBatallas();
+  var desafiosRef = SrvFirebase.RefDesafios();
   $scope.DesafiosDisponibles = [];
 
   desafiosRef.on('child_added', function(snapshot) {
