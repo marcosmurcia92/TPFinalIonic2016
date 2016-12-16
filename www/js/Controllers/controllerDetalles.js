@@ -40,21 +40,25 @@ function ($scope,$http,$state, $timeout, $ionicPopup, $stateParams, CreditosSrv,
     tlSlot: {
       estado: "Oculto",
       duenio: "Vacio",
+      estado2: "Oculto",
       duenio2: "Vacio"
     },
     trSlot: {
       estado: "Oculto",
       duenio: "Vacio",
+      estado2: "Oculto",
       duenio2: "Vacio"
     },
     blSlot: {
       estado: "Oculto",
       duenio: "Vacio",
+      estado2: "Oculto",
       duenio2: "Vacio"
     },
     brSlot: {
       estado: "Oculto",
       duenio: "Vacio",
+      estado2: "Oculto",
       duenio2: "Vacio"
     }
   };
@@ -63,64 +67,118 @@ function ($scope,$http,$state, $timeout, $ionicPopup, $stateParams, CreditosSrv,
 
   $scope.RadioButtonClick = function(but){
     console.log(but);
-
     $scope.newSelect = but;
-    switch (but){
-      case 'TL':
-        $scope.des.tlSlot.estado = "Visible";
-        if($scope.des.tlSlot.duenio != "Vacio"){
-          $timeout(function(){
-            alert("Descubrio a " + $scope.des.tlSlot.duenio.userName);
-          },500);
+  }
+
+  $scope.gameSelect = "";
+
+  $scope.GameButtonClick = function(but){
+    console.log(but);
+
+    var gano = false;
+
+    $scope.gameSelect = but;
+
+    $timeout(function(){
+      switch (but){
+        case 'TL':
+          if($scope.des.turno == "C"){
+            $scope.des.tlSlot.estado = "Visible";
+          }else{
+            $scope.des.tlSlot.estado2 = "Visible";
+          }
+          if($scope.des.tlSlot.duenio != "Vacio" && $scope.des.turno == "D"){
+            gano = true;
+            $timeout(function(){
+              alert("Descubrio a " + $scope.des.tlSlot.duenio.userName);
+            },500);
+          }
+          if($scope.des.tlSlot.duenio2 != "Vacio" && $scope.des.turno == "C"){
+            gano = true;
+            $timeout(function(){
+              alert("Descubrio a " + $scope.des.tlSlot.duenio2.userName);
+            },500);
+          }
+          break;
+        case 'TR':
+          if($scope.des.turno == "C"){
+            $scope.des.trSlot.estado = "Visible";
+          }else{
+            $scope.des.trSlot.estado2 = "Visible";
+          }
+          if($scope.des.trSlot.duenio != "Vacio" && $scope.des.turno == "D"){
+            gano = true;
+            $timeout(function(){
+              alert("Descubrio a " + $scope.des.trSlot.duenio.userName);
+            },500);
+          }
+          if($scope.des.trSlot.duenio2 != "Vacio" && $scope.des.turno == "C"){
+            gano = true;
+            $timeout(function(){
+              alert("Descubrio a " + $scope.des.trSlot.duenio2.userName);
+            },500);
+          }
+          break;
+        case 'BL':
+          if($scope.des.turno == "C"){
+            $scope.des.blSlot.estado = "Visible";
+          }else{
+            $scope.des.blSlot.estado2 = "Visible";
+          }
+          if($scope.des.blSlot.duenio != "Vacio" && $scope.des.turno == "D"){
+            gano = true;
+            $timeout(function(){
+              alert("Descubrio a " + $scope.des.blSlot.duenio.userName);
+            },500);
+          }
+          if($scope.des.blSlot.duenio2 != "Vacio" && $scope.des.turno == "C"){
+            gano = true;
+            $timeout(function(){
+              alert("Descubrio a " + $scope.des.blSlot.duenio2.userName);
+            },500);
+          }
+          break;
+        case 'BR':
+          if($scope.des.turno == "C"){
+            $scope.des.brSlot.estado = "Visible";
+          }else{
+            $scope.des.brSlot.estado2 = "Visible";
+          }
+          if($scope.des.brSlot.duenio != "Vacio" && $scope.des.turno == "D"){
+            gano = true;
+            $timeout(function(){
+              alert("Descubrio a " + $scope.des.brSlot.duenio.userName);
+            },500);
+          }
+          if($scope.des.brSlot.duenio2 != "Vacio" && $scope.des.turno == "C"){
+            gano = true;
+            $timeout(function(){
+              alert("Descubrio a " + $scope.des.brSlot.duenio2.userName);
+            },500);
+          }
+          break;
+        default:
+          break;
+      }
+
+      if(gano){
+        if($scope.des.ganador == ""){
+          //GANADOR
+          $scope.des.ganador = UsuarioDesafios.getShowData();
+        }else{
+          //EMPATE
+          $scope.des.ganador = "EMPATE";
         }
-        if($scope.des.tlSlot.duenio2 != "Vacio"){
-          $timeout(function(){
-            alert("Descubrio a " + $scope.des.tlSlot.duenio2.userName);
-          },500);
+
+        if($scope.des.turno == "C"){
+          $scope.SiguienteTurno();
+        }else{
+          $scope.CompletarDesafio();
         }
-        break;
-      case 'TR':
-        $scope.des.trSlot.estado = "Visible";
-        if($scope.des.trSlot.duenio != "Vacio"){
-          $timeout(function(){
-            alert("Descubrio a " + $scope.des.trSlot.duenio.userName);
-          },500);
-        }
-        if($scope.des.trSlot.duenio2 != "Vacio"){
-          $timeout(function(){
-            alert("Descubrio a " + $scope.des.trSlot.duenio2.userName);
-          },500);
-        }
-        break;
-      case 'BL':
-        $scope.des.blSlot.estado = "Visible";
-        if($scope.des.blSlot.duenio != "Vacio"){
-          $timeout(function(){
-            alert("Descubrio a " + $scope.des.blSlot.duenio.userName);
-          },500);
-        }
-        if($scope.des.blSlot.duenio2 != "Vacio"){
-          $timeout(function(){
-            alert("Descubrio a " + $scope.des.blSlot.duenio2.userName);
-          },500);
-        }
-        break;
-      case 'BR':
-        $scope.des.brSlot.estado = "Visible";
-        if($scope.des.brSlot.duenio != "Vacio"){
-          $timeout(function(){
-            alert("Descubrio a " + $scope.des.brSlot.duenio.userName);
-          },500);
-        }
-        if($scope.des.brSlot.duenio2 != "Vacio"){
-          $timeout(function(){
-            alert("Descubrio a " + $scope.des.brSlot.duenio2.userName);
-          },500);
-        }
-        break;
-      default:
-        break;
-    }
+      }else{
+        $scope.SiguienteTurno();
+      }
+    },500);
   }
 
   $scope.getFechaInicio = function(){
@@ -142,14 +200,33 @@ function ($scope,$http,$state, $timeout, $ionicPopup, $stateParams, CreditosSrv,
   $scope.AceptarDesafio = function(){
     $scope.des.desafiado = UsuarioDesafios.getShowData();
     $scope.des.estado = 'Accepted';
+    $scope.des.fechaInicio = $scope.des.fechaInicio.getTime();
+    $scope.des.fechaFin = $scope.des.fechaFin.getTime();
+
+    switch($scope.newSelect){
+      case 'TL':
+        $scope.des.tlSlot.duenio2 = UsuarioDesafios.getShowData();
+        break;
+      case 'TR':
+        $scope.des.trSlot.duenio2 = UsuarioDesafios.getShowData();
+        break;
+      case 'BL':
+        $scope.des.blSlot.duenio2 = UsuarioDesafios.getShowData();
+        break;
+      case 'BR':
+        $scope.des.brSlot.duenio2 = UsuarioDesafios.getShowData();
+        break;
+      default:
+        console.log("ERROR UNDEFINED");
+        return 0;
+    }
 
     CreditosSrv.GastarCreditos(UsuarioDesafios.getShowData(),$scope.des.valorApuesta);
 
     //SOBRESCRIBIR DESAFIO
-    SrvFirebase.RefDesafios($stateParams.desId).update({
-      desafiado : UsuarioDesafios.getShowData(),
-      estado : 'Accepted'
-    },function(error){
+    SrvFirebase.RefBatallas($stateParams.desId).set(
+      $scope.des
+    ,function(error){
       if(error){
         var alertPopup = $ionicPopup.alert({
            title: 'Error',
@@ -174,18 +251,54 @@ function ($scope,$http,$state, $timeout, $ionicPopup, $stateParams, CreditosSrv,
 
   };
 
+  $scope.SiguienteTurno = function(){
+    $scope.des.turno = ($scope.des.turno == "C" ? "D" : "C");
+    $scope.des.fechaInicio = $scope.des.fechaInicio.getTime();
+    $scope.des.fechaFin = $scope.des.fechaFin.getTime();
+    
+    SrvFirebase.RefBatallas($stateParams.desId).set(
+      $scope.des,
+      function(error){
+        if(error){
+          var alertPopup = $ionicPopup.alert({
+             title: 'Error',
+             template: error
+           });
+
+           alertPopup.then(function(res) {
+             console.log('Error cerrado');
+           });
+        }else{
+          var alertPopup = $ionicPopup.alert({
+             title: 'Movimiento Realizado',
+             template: 'Espera a la respuesta del otro jugador!'
+           });
+
+           alertPopup.then(function(res) {
+             console.log('Alert de Aceptado cerrado');
+              $state.go('desafiosTabs.desafiosAceptados');
+           });
+        }
+      })
+  };
+
   $scope.CompletarDesafio = function(){
     //GANADOR ES EL DESAFIANTE
-    $scope.des.ganador = $scope.des.desafiado;
     $scope.des.estado = 'Finished';
+    $scope.des.fechaInicio = $scope.des.fechaInicio.getTime();
+    $scope.des.fechaFin = $scope.des.fechaFin.getTime();
 
-    CreditosSrv.GanarCreditos($scope.des.ganador,$scope.des.valorApuesta * 2);
+    if($scope.des.ganador == "EMPATE"){
+      CreditosSrv.GanarCreditos($scope.des.creador,$scope.des.valorApuesta);
+      CreditosSrv.GanarCreditos($scope.des.desafiado,$scope.des.valorApuesta);
+    }else{
+      CreditosSrv.GanarCreditos($scope.des.ganador,$scope.des.valorApuesta * 2);
+    }
 
     //SOBRESCRIBIR DESAFIO
-    SrvFirebase.RefDesafios($stateParams.desId).update({
-      ganador : $scope.des.desafiado,
-      estado : 'Finished'
-    },function(error){
+    SrvFirebase.RefBatallas($stateParams.desId).set(
+      $scope.des,
+      function(error){
       if(error){
         var alertPopup = $ionicPopup.alert({
            title: 'Error',
@@ -217,7 +330,7 @@ function ($scope,$http,$state, $timeout, $ionicPopup, $stateParams, CreditosSrv,
     CreditosSrv.GanarCreditos($scope.des.ganador,$scope.des.valorApuesta * 2);
 
     //SOBRESCRIBIR DESAFIO
-    SrvFirebase.RefDesafios($stateParams.desId).update({
+    SrvFirebase.RefBatallas($stateParams.desId).update({
       ganador : $scope.des.creador,
       estado : 'Finished'
     },function(error){
@@ -245,7 +358,7 @@ function ($scope,$http,$state, $timeout, $ionicPopup, $stateParams, CreditosSrv,
   };
 
   console.info("PARAMS", $stateParams.desId);
-  SrvFirebase.RefDesafios($stateParams.desId).once('value', function(snapshot) {
+  SrvFirebase.RefBatallas($stateParams.desId).once('value', function(snapshot) {
       var exists = (snapshot.val() != null);
       console.log(exists);
       if(exists){

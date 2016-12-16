@@ -19,7 +19,7 @@ function ($scope,$state, $timeout, $stateParams, UsuarioDesafios,SrvFirebase) {
     }
   });
 
-  var desafiosRef = SrvFirebase.RefDesafios();
+  var desafiosRef = SrvFirebase.RefBatallas();
   $scope.DesafiosDisponibles = [];
   $scope.cantidadDesafios = 0;
 

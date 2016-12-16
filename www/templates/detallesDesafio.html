@@ -15,7 +15,7 @@
       <!-- BOTONES PARA ELEGIR DONDE ACEPTAR DESAFIO -->
       <div id="gridWrapper" ng-show="(!user.isAdmin() && des.estado == 'Available' && (des.creador.userUUID != user.getUUID()))">
               <div class="flipBtnWrapper">
-                  <input type="checkbox" class="flipBtn_checkbox" ng-model="gridSelect" ng-true-value="'TL'" ng-false-value=""/>
+                  <input type="checkbox" class="flipBtn_checkbox" ng-model="newSelect" ng-change="RadioButtonClick(newSelect)" ng-true-value="'TL'" ng-false-value=""/>
                   <div class="flipBtn demo3">
                     <div class="flipBtn_face flipBtn_back demo3">
                       <h3 align=center></h3>
@@ -28,7 +28,7 @@
                   </div>
               </div>
               <div class="flipBtnWrapper">
-                  <input type="checkbox" class="flipBtn_checkbox" ng-model="gridSelect" ng-true-value="'TR'" ng-false-value="" />
+                  <input type="checkbox" class="flipBtn_checkbox" ng-model="newSelect" ng-change="RadioButtonClick(newSelect)" ng-true-value="'TR'" ng-false-value="" />
                   <div class="flipBtn demo3">
                     <div class="flipBtn_face flipBtn_back demo3">
                       <h3 align=center></h3>
@@ -43,7 +43,7 @@
       </div>
       <div id="gridWrapper" ng-show="(!user.isAdmin() && des.estado == 'Available' && (des.creador.userUUID != user.getUUID()))">
               <div class="flipBtnWrapper">
-                  <input type="checkbox" class="flipBtn_checkbox" ng-model="gridSelect" ng-true-value="'BL'" ng-false-value=""/>
+                  <input type="checkbox" class="flipBtn_checkbox" ng-model="newSelect" ng-change="RadioButtonClick(newSelect)" ng-true-value="'BL'" ng-false-value=""/>
                   <div class="flipBtn demo3">
                     <div class="flipBtn_face flipBtn_back demo3">
                       <h3 align=center></h3>
@@ -54,7 +54,7 @@
                   </div>
                 </div>
               <div class="flipBtnWrapper">
-                  <input type="checkbox" class="flipBtn_checkbox" ng-model="gridSelect" ng-true-value="'BR'" ng-false-value=""/>
+                  <input type="checkbox" class="flipBtn_checkbox" ng-model="newSelect" ng-change="RadioButtonClick(newSelect)" ng-true-value="'BR'" ng-false-value=""/>
                   <div class="flipBtn demo3">
                     <div class="flipBtn_face flipBtn_back demo3">
                       <h3 align=center></h3>
@@ -71,30 +71,30 @@
       <h2 id="" ng-show="(des.estado == 'Accepted' && des.turno == 'D')">Turno de {{des.desafiado.userName}}!</h2>
 	    <div id="gridWrapper" ng-show="(des.estado == 'Accepted')">
           <div class="flipBtnWrapper">
-            <input type="checkbox" class="flipBtn_checkbox" ng-checked="des.tlSlot.estado != 'Oculto'" ng-click="RadioButtonClick('TL')" ng-disabled = "((des.tlSlot.duenio != 'Vacio' && des.tlSlot.duenio.userUUID == user.getUUID()) || (des.tlSlot.duenio2 != 'Vacio' && des.tlSlot.duenio2.userUUID == user.getUUID()) || des.tlSlot.estado == 'Visible' || newSelect != '')"/>
+            <input type="checkbox" class="flipBtn_checkbox" ng-checked="((des.creador.userUUID == user.getUUID() && des.tlSlot.estado != 'Oculto') || (des.desafiado.userUUID == user.getUUID() && des.tlSlot.estado2 != 'Oculto'))" ng-click="GameButtonClick('TL')" ng-disabled = "((des.turno == 'D' && des.desafiado.userUUID != user.getUUID()) || (des.turno == 'C' && des.creador.userUUID != user.getUUID()) || (des.tlSlot.estado2 == 'Visible' && des.turno == 'D') || (des.tlSlot.estado == 'Visible' && des.turno == 'C') || gameSelect != '')"/>
             <div class="flipBtn demo3">
               <div class="flipBtn_face flipBtn_back demo4">
-                <h4 ng-show="des.tlSlot.duenio != 'Vacio'" align=center>{{des.tlSlot.duenio.userName}}</h4>
-                <h4 ng-show="des.tlSlot.duenio2 != 'Vacio'" align=center>{{des.tlSlot.duenio2.userName}}</h4>
-                <H2 ng-show="(des.tlSlot.duenio != 'Vacio' || des.tlSlot.duenio2 != 'Vacio')"align=center>${{des.valorApuesta}}</H2>
-                <h4 ng-show="(des.tlSlot.duenio == 'Vacio' && des.tlSlot.duenio2 == 'Vacio')" align=center>VACIO</h4>
-                <h1 ng-show="(des.tlSlot.duenio == 'Vacio' && des.tlSlot.duenio2 == 'Vacio')" align=center>:(</h1>
+                <h4 ng-show="(des.tlSlot.duenio != 'Vacio' && des.desafiado.userUUID == user.getUUID())" align=center>{{des.tlSlot.duenio.userName}}</h4>
+                <h4 ng-show="(des.tlSlot.duenio2 != 'Vacio' && des.creador.userUUID == user.getUUID())" align=center>{{des.tlSlot.duenio2.userName}}</h4>
+                <H2 ng-show="((des.tlSlot.duenio != 'Vacio' && des.desafiado.userUUID == user.getUUID()) || (des.tlSlot.duenio2 != 'Vacio' && des.creador.userUUID == user.getUUID()))"align=center>${{des.valorApuesta}}</H2>
+                <h4 ng-show="((des.tlSlot.duenio == 'Vacio' && des.desafiado.userUUID == user.getUUID()) || (des.tlSlot.duenio2 == 'Vacio' && des.creador.userUUID == user.getUUID()))" align=center>VACIO</h4>
+                <h1 ng-show="((des.tlSlot.duenio == 'Vacio' && des.desafiado.userUUID == user.getUUID()) || (des.tlSlot.duenio2 == 'Vacio' && des.creador.userUUID == user.getUUID()))" align=center>:(</h1>
               </div>
               <div class="flipBtn_face flipBtn_mid demo3">
               </div>
-              <div class="flipBtn_face flipBtn_front demo3">
+              <div class="flipBtn_face flipBtn_front demo4">
               </div>
             </div>
           </div>
           <div class="flipBtnWrapper">
-            <input type="checkbox" class="flipBtn_checkbox" ng-checked="des.trSlot.estado != 'Oculto'" ng-click="RadioButtonClick('TR')" ng-disabled = "((des.trSlot.duenio != 'Vacio' && des.trSlot.duenio.userUUID == user.getUUID()) || (des.trSlot.duenio2 != 'Vacio' && des.trSlot.duenio2.userUUID == user.getUUID()) || des.trSlot.estado == 'Visible' || newSelect != '')"/>
+            <input type="checkbox" class="flipBtn_checkbox" ng-checked="((des.creador.userUUID == user.getUUID() && des.trSlot.estado != 'Oculto') || (des.desafiado.userUUID == user.getUUID() && des.trSlot.estado2 != 'Oculto'))" ng-click="GameButtonClick('TR')" ng-disabled = "((des.turno == 'D' && des.desafiado.userUUID != user.getUUID()) || (des.turno == 'C' && des.creador.userUUID != user.getUUID()) || (des.trSlot.estado2 == 'Visible' && des.turno == 'D') || (des.trSlot.estado == 'Visible' && des.turno == 'C') || gameSelect != '')"/>
             <div class="flipBtn demo3">
-              <div class="flipBtn_face flipBtn_back demo3">
-                <h4 ng-show="des.trSlot.duenio != 'Vacio'" align=center>{{des.trSlot.duenio.userName}}</h4>
-                <h4 ng-show="des.trSlot.duenio2 != 'Vacio'" align=center>{{des.trSlot.duenio2.userName}}</h4>
-                <H2 ng-show="(des.trSlot.duenio != 'Vacio' || des.trSlot.duenio2 != 'Vacio')"align=center>${{des.valorApuesta}}</H2>
-                <h4 ng-show="(des.trSlot.duenio == 'Vacio' && des.trSlot.duenio2 == 'Vacio')" align=center>VACIO</h4>
-                <h1 ng-show="(des.trSlot.duenio == 'Vacio' && des.trSlot.duenio2 == 'Vacio')" align=center>:(</h1>
+              <div class="flipBtn_face flipBtn_back demo4">
+                <h4 ng-show="(des.trSlot.duenio != 'Vacio' && des.desafiado.userUUID == user.getUUID())" align=center>{{des.trSlot.duenio.userName}}</h4>
+                <h4 ng-show="(des.trSlot.duenio2 != 'Vacio' && des.creador.userUUID == user.getUUID())" align=center>{{des.trSlot.duenio2.userName}}</h4>
+                <H2 ng-show="((des.trSlot.duenio != 'Vacio' && des.desafiado.userUUID == user.getUUID()) || (des.trSlot.duenio2 != 'Vacio' && des.creador.userUUID == user.getUUID()))"align=center>${{des.valorApuesta}}</H2>
+                <h4 ng-show="((des.trSlot.duenio == 'Vacio' && des.desafiado.userUUID == user.getUUID()) || (des.trSlot.duenio2 == 'Vacio' && des.creador.userUUID == user.getUUID()))" align=center>VACIO</h4>
+                <h1 ng-show="((des.trSlot.duenio == 'Vacio' && des.desafiado.userUUID == user.getUUID()) || (des.trSlot.duenio2 == 'Vacio' && des.creador.userUUID == user.getUUID()))" align=center>:(</h1>
               </div>
               <div class="flipBtn_face flipBtn_mid demo3">
               </div>
@@ -103,35 +103,35 @@
             </div>
          </div>
       </div>
-        <div id="gridWrapper" ng-show="(des.estado == 'Accepted')">
-            <div class="flipBtnWrapper">
-              <input type="checkbox" class="flipBtn_checkbox" ng-checked="des.blSlot.estado != 'Oculto'" ng-click="RadioButtonClick('BL')" ng-disabled = "((des.blSlot.duenio != 'Vacio' && des.blSlot.duenio.userUUID == user.getUUID()) || (des.blSlot.duenio2 != 'Vacio' && des.blSlot.duenio2.userUUID == user.getUUID()) || des.blSlot.estado == 'Visible' || newSelect != '')"/>
-              <div class="flipBtn demo3">
-                <div class="flipBtn_face flipBtn_back demo3">
-                  <h4 ng-show="des.blSlot.duenio != 'Vacio'" align=center>{{des.blSlot.duenio.userName}}</h4>
-                  <h4 ng-show="des.blSlot.duenio2 != 'Vacio'" align=center>{{des.blSlot.duenio2.userName}}</h4>
-                  <H2 ng-show="(des.blSlot.duenio != 'Vacio' || des.blSlot.duenio2 != 'Vacio')"align=center>${{des.valorApuesta}}</H2>
-                  <h4 ng-show="(des.blSlot.duenio == 'Vacio' && des.blSlot.duenio2 == 'Vacio')" align=center>VACIO</h4>
-                  <h1 ng-show="(des.blSlot.duenio == 'Vacio' && des.blSlot.duenio2 == 'Vacio')" align=center>:(</h1>
-              </div>
-                <div class="flipBtn_face flipBtn_mid demo3"></div>
-                <div class="flipBtn_face flipBtn_front demo3"></div>
-              </div>
+      <div id="gridWrapper" ng-show="(des.estado == 'Accepted')">
+          <div class="flipBtnWrapper">
+            <input type="checkbox" class="flipBtn_checkbox" ng-checked="((des.creador.userUUID == user.getUUID() && des.blSlot.estado != 'Oculto') || (des.desafiado.userUUID == user.getUUID() && des.blSlot.estado2 != 'Oculto'))" ng-click="GameButtonClick('BL')" ng-disabled = "((des.turno == 'D' && des.desafiado.userUUID != user.getUUID()) || (des.turno == 'C' && des.creador.userUUID != user.getUUID()) || (des.blSlot.estado2 == 'Visible' && des.turno == 'D') || (des.blSlot.estado == 'Visible' && des.turno == 'C') || gameSelect != '')"/>
+            <div class="flipBtn demo3">
+              <div class="flipBtn_face flipBtn_back demo4">
+                <h4 ng-show="(des.blSlot.duenio != 'Vacio' && des.desafiado.userUUID == user.getUUID())" align=center>{{des.blSlot.duenio.userName}}</h4>
+                <h4 ng-show="(des.blSlot.duenio2 != 'Vacio' && des.creador.userUUID == user.getUUID())" align=center>{{des.blSlot.duenio2.userName}}</h4>
+                <H2 ng-show="((des.blSlot.duenio != 'Vacio' && des.desafiado.userUUID == user.getUUID()) || (des.blSlot.duenio2 != 'Vacio' && des.creador.userUUID == user.getUUID()))"align=center>${{des.valorApuesta}}</H2>
+                <h4 ng-show="((des.blSlot.duenio == 'Vacio' && des.desafiado.userUUID == user.getUUID()) || (des.blSlot.duenio2 == 'Vacio' && des.creador.userUUID == user.getUUID()))" align=center>VACIO</h4>
+                <h1 ng-show="((des.blSlot.duenio == 'Vacio' && des.desafiado.userUUID == user.getUUID()) || (des.blSlot.duenio2 == 'Vacio' && des.creador.userUUID == user.getUUID()))" align=center>:(</h1>
             </div>
-            <div class="flipBtnWrapper">
-              <input type="checkbox" class="flipBtn_checkbox" ng-checked="des.brSlot.estado != 'Oculto'" ng-click="RadioButtonClick('BR')" ng-disabled = "((des.brSlot.duenio != 'Vacio' && des.brSlot.duenio.userUUID == user.getUUID()) || (des.brSlot.duenio2 != 'Vacio' && des.brSlot.duenio2.userUUID == user.getUUID()) || des.brSlot.estado == 'Visible' || newSelect != '')"/>
-              <div class="flipBtn demo3">
-                <div class="flipBtn_face flipBtn_back demo4">
-                  <h4 ng-show="des.brSlot.duenio != 'Vacio'" align=center>{{des.brSlot.duenio.userName}}</h4>
-                  <h4 ng-show="des.brSlot.duenio2 != 'Vacio'" align=center>{{des.brSlot.duenio2.userName}}</h4>
-                  <H2 ng-show="(des.brSlot.duenio != 'Vacio' || des.brSlot.duenio2 != 'Vacio')"align=center>${{des.valorApuesta}}</H2>
-                  <h4 ng-show="(des.brSlot.duenio == 'Vacio' && des.brSlot.duenio2 == 'Vacio')" align=center>VACIO</h4>
-                  <h1 ng-show="(des.brSlot.duenio == 'Vacio' && des.brSlot.duenio2 == 'Vacio')" align=center>:(</h1>
-                </div>
-                <div class="flipBtn_face flipBtn_mid demo3"></div>
-                <div class="flipBtn_face flipBtn_front demo4"></div>
+              <div class="flipBtn_face flipBtn_mid demo3"></div>
+              <div class="flipBtn_face flipBtn_front demo4"></div>
             </div>
           </div>
+          <div class="flipBtnWrapper">
+            <input type="checkbox" class="flipBtn_checkbox" ng-checked="((des.creador.userUUID == user.getUUID() && des.brSlot.estado != 'Oculto') || (des.desafiado.userUUID == user.getUUID() && des.brSlot.estado2 != 'Oculto'))" ng-click="GameButtonClick('BR')" ng-disabled = "((des.turno == 'D' && des.desafiado.userUUID != user.getUUID()) || (des.turno == 'C' && des.creador.userUUID != user.getUUID()) || (des.brSlot.estado2 == 'Visible' && des.turno == 'D') || (des.brSlot.estado == 'Visible' && des.turno == 'C') || gameSelect != '')"/>
+            <div class="flipBtn demo3">
+              <div class="flipBtn_face flipBtn_back demo4">
+                <h4 ng-show="(des.brSlot.duenio != 'Vacio' && des.desafiado.userUUID == user.getUUID())" align=center>{{des.brSlot.duenio.userName}}</h4>
+                <h4 ng-show="(des.brSlot.duenio2 != 'Vacio' && des.creador.userUUID == user.getUUID())" align=center>{{des.brSlot.duenio2.userName}}</h4>
+                <H2 ng-show="((des.brSlot.duenio != 'Vacio' && des.desafiado.userUUID == user.getUUID()) || (des.brSlot.duenio2 != 'Vacio' && des.creador.userUUID == user.getUUID()))"align=center>${{des.valorApuesta}}</H2>
+                <h4 ng-show="((des.brSlot.duenio == 'Vacio' && des.desafiado.userUUID == user.getUUID()) || (des.brSlot.duenio2 == 'Vacio' && des.creador.userUUID == user.getUUID()))" align=center>VACIO</h4>
+                <h1 ng-show="((des.brSlot.duenio == 'Vacio' && des.desafiado.userUUID == user.getUUID()) || (des.brSlot.duenio2 == 'Vacio' && des.creador.userUUID == user.getUUID()))" align=center>:(</h1>
+              </div>
+              <div class="flipBtn_face flipBtn_mid demo3"></div>
+              <div class="flipBtn_face flipBtn_front demo4"></div>
+          </div>
+        </div>
       </div>
 
 	    <button id="detallesDesafio-button3" ng-show="(!user.isAdmin() && des.estado == 'Available' && (des.creador.userUUID != user.getUUID()))" ng-click="AceptarDesafio()" style="color:#FFFFFF;" class="button button-balanced  button-block icon ion-android-checkmark-circle"> Aceptar Desafio</button>

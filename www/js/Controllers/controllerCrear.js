@@ -42,6 +42,7 @@ function ($scope,$state ,$stateParams,$ionicPopup, CreditosSrv, UsuarioDesafios,
   }
 
   $scope.createDesafio = function(){
+
     var batallasRef = SrvFirebase.RefBatallas();
     batallasRef.push({
       titulo: $scope.nuevaBatallaData.titulo,
@@ -56,30 +57,46 @@ function ($scope,$state ,$stateParams,$ionicPopup, CreditosSrv, UsuarioDesafios,
       tlSlot: {
         estado: "Oculto",
         duenio: ($scope.gridSelect == "TL" ? UsuarioDesafios.getShowData() : "Vacio"),
+        estado2: "Oculto",
         duenio2: "Vacio"
       },
       trSlot: {
         estado: "Oculto",
         duenio: ($scope.gridSelect == "TR" ? UsuarioDesafios.getShowData() : "Vacio"),
+        estado2: "Oculto",
         duenio2: "Vacio"
       },
       blSlot: {
         estado: "Oculto",
         duenio: ($scope.gridSelect == "BL" ? UsuarioDesafios.getShowData() : "Vacio"),
+        estado2: "Oculto",
         duenio2: "Vacio"
       },
       brSlot: {
         estado: "Oculto",
         duenio: ($scope.gridSelect == "BR" ? UsuarioDesafios.getShowData() : "Vacio"),
+        estado2: "Oculto",
         duenio2: "Vacio"
       }
     },function(error){
       if(error){
-
+        var alertPopup = $ionicPopup.alert({
+           title: 'Error',
+           template: 'Error al Crear, revise la Consola'
+         });
       }else{
         SrvFirebase.EnviarNotificacion();
         CreditosSrv.GastarCreditos(UsuarioDesafios.getShowData(),$scope.nuevaBatallaData.valorApuesta);
         $scope.cleanData();
+
+        var alertPopup = $ionicPopup.alert({
+           title: 'Desafio Creado',
+           template: 'Tu desafio ha sido creado exitosamente, espera a que otro jugador se una a la competencia.'
+         });
+        alertPopup.then(function(res) {
+           console.log('Alert de Creacion cerrado');
+            $state.go('desafiosTabs.listaDeDesafios');
+         });
       }
     });
   }

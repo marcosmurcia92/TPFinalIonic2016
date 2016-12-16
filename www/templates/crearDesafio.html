@@ -22,12 +22,12 @@
             </label>
             <div class="spacer" style="width: 300px; height: 10px;"></div>
             <ion-item class="range range-positive" id="crearDesafio-range2">Apuesta ${{nuevaBatallaData.valorApuesta}}
-                <input type="range" min="0" max="100" step="1" ng-model="nuevaBatallaData.valorApuesta" name="desafioApuesta" required>
+                <input type="range" min="0" max="100" step="10" ng-model="nuevaBatallaData.valorApuesta" name="desafioApuesta" required>
             </ion-item>
             <div class="spacer" style="width: 300px; height: 10px;"></div>
             <div id="gridWrapper">
                     <div class="flipBtnWrapper">
-                        <input type="checkbox" class="flipBtn_checkbox" ng-model="gridSelect" ng-true-value="'TL'" ng-false-value=""/>
+                        <input type="checkbox" class="flipBtn_checkbox" ng-model="gridSelect" ng-change="RadioButtonClick(gridSelect)" ng-true-value="'TL'" ng-false-value=""/>
                         <div class="flipBtn demo3">
                           <div class="flipBtn_face flipBtn_back demo3">
                             <h3 align=center></h3>
@@ -40,7 +40,7 @@
                         </div>
                     </div>
                     <div class="flipBtnWrapper">
-                        <input type="checkbox" class="flipBtn_checkbox" ng-model="gridSelect" ng-true-value="'TR'" ng-false-value="" />
+                        <input type="checkbox" class="flipBtn_checkbox" ng-model="gridSelect" ng-change="RadioButtonClick(gridSelect)" ng-true-value="'TR'" ng-false-value="" />
                         <div class="flipBtn demo3">
                           <div class="flipBtn_face flipBtn_back demo3">
                             <h3 align=center></h3>
@@ -55,7 +55,7 @@
             </div>
             <div id="gridWrapper">
                     <div class="flipBtnWrapper">
-                        <input type="checkbox" class="flipBtn_checkbox" ng-model="gridSelect" ng-true-value="'BL'" ng-false-value=""/>
+                        <input type="checkbox" class="flipBtn_checkbox" ng-model="gridSelect" ng-change="RadioButtonClick(gridSelect)" ng-true-value="'BL'" ng-false-value=""/>
                         <div class="flipBtn demo3">
                           <div class="flipBtn_face flipBtn_back demo3">
                             <h3 align=center></h3>
@@ -66,7 +66,7 @@
                         </div>
                       </div>
                     <div class="flipBtnWrapper">
-                        <input type="checkbox" class="flipBtn_checkbox" ng-model="gridSelect" ng-true-value="'BR'" ng-false-value=""/>
+                        <input type="checkbox" class="flipBtn_checkbox" ng-model="gridSelect" ng-change="RadioButtonClick(gridSelect)" ng-true-value="'BR'" ng-false-value=""/>
                         <div class="flipBtn demo3">
                           <div class="flipBtn_face flipBtn_back demo3">
                             <h3 align=center></h3>

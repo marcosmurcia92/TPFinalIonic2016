@@ -54,6 +54,7 @@ angular.module('app.services', [])
 
 	this.RefUsuarios = RefUsuarios;
 	this.RefDesafios = RefDesafios;
+	this.RefBatallas = RefBatallas;
 	this.EnviarNotificacion = EnviarNotificacion;
 
 	function ObtenerRef(coleccion){
