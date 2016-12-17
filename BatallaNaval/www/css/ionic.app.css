@@ -5642,6 +5642,54 @@ ion-tabs.tabs-color-active-dark .tab-item {
   border-width: 1px;
   border-style: solid;
   font-size: 16px; }
+.itemAvailable {
+  border-color: #0a9dc7;
+  background-color: #11c1f3;
+  color: #000;
+  position: relative;
+  z-index: 2;
+  display: block;
+  margin: -1px;
+  padding: 16px;
+  border-width: 1px;
+  border-style: solid;
+  font-size: 16px; }
+.itemAccepted {
+  border-color: #28a54c;
+  background-color: #33cd5f;
+  color: #fff;
+  position: relative;
+  z-index: 2;
+  display: block;
+  margin: -1px;
+  padding: 16px;
+  border-width: 1px;
+  border-style: solid;
+  font-size: 16px; }
+.itemChecking {
+  border-color: #e6b500;
+  background-color: #ffc900;
+  color: #000;
+  position: relative;
+  z-index: 2;
+  display: block;
+  margin: -1px;
+  padding: 16px;
+  border-width: 1px;
+  border-style: solid;
+  font-size: 16px; }
+.itemFinished {
+  border-color: #6b46e5;
+  background-color: #886aea;
+  color: #fff;
+  position: relative;
+  z-index: 2;
+  display: block;
+  margin: -1px;
+  padding: 16px;
+  border-width: 1px;
+  border-style: solid;
+  font-size: 16px; }
   .item h2 {
     margin: 0 0 2px 0;
     font-size: 16px;

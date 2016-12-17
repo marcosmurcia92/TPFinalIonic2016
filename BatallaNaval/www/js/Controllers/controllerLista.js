@@ -35,6 +35,38 @@ function ($scope,$state, $timeout, $stateParams, UsuarioDesafios,SrvFirebase) {
     });
   });
 
+  $scope.GetStyle = function(estado){
+    var estilo = "";
+    switch(estado){
+      case 'Available':
+        estilo = {
+          'background-color': '#0066ff',
+          'font-color': '#FFF',
+        };
+        break;
+      case 'Accepted':
+        estilo = {
+          'background-color': '#66ff66',
+          'font-color': '#FFF',
+        };
+        break;
+      case 'Checking':
+        estilo = {
+          'background-color': '#ffff66',
+          'font-color': '#FFF',
+        };
+        break;
+      case 'Finished':
+        estilo = {
+          'background-color': '#6600ff',
+          'font-color': '#FFF',
+        };
+        break;
+      default:
+        break;
+    }
+  };
+
   $scope.IrAlDesafio = function(desafio){
     $state.go('detallesDesafio',{desId : desafio.id, backState : 'desafiosTabs.listaDeDesafios'});
   };

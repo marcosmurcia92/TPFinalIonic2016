@@ -110,6 +110,18 @@ function ($scope, $stateParams, $timeout,$ionicPopup, UsuarioDesafios,SrvFirebas
   }
 
   $scope.afterLoginSuccess = function(){
+    // FCMPlugin.getToken(
+    //   function(token){
+    //     console.log("TOKEN: " + token);
+    //      var alertPopup = $ionicPopup.alert({
+    //        title: 'Token de FCM',
+    //        template: 'Token: ' + token
+    //      });
+    //   },
+    //   function(err){
+    //     console.log('error retrieving token: ' + err);
+    //   }
+    // )
     $scope.checkIfUserExists();
   }
 
