@@ -1,0 +1,59 @@
+<ion-view title="{{modalState}}" hide-back-button="true" cache-view="false" id="page7">
+    <ion-content padding="true" style="background: url(img/Background.jpg) no-repeat center;background-size:cover;" class="has-header">
+        <div id="perfilLoginRegister-container1" ng-if="modalState == 'Perfil'">
+            <h2 id="perfilLoginRegister-heading1" style="color:#000000;text-align:center;">{{userData.username}}</h2>
+            <div>
+                <img ng-show= "userData.profile_picture != null" src="{{userData.profile_picture}}" width="150px" height="auto" style="display: block; margin-left: auto; margin-right: auto;">
+                <img ng-show= "userData.profile_picture == null" src="img/Profile.jpg" width="150px" height="auto" style="display: block; margin-left: auto; margin-right: auto;">
+            </div>
+            <h3 id="perfilLoginRegister-heading2" style="color:#000000;text-align:justify;">Creditos: ${{userData.credits}}</h3>
+            <button id="perfilLoginRegister-button2" ng-click="cargarCreditos()" class="button button-balanced  button-block">Cargar más créditos (300)</button>
+            <button id="perfilLoginRegister-button1" ng-click="doLogout()" class="button button-assertive  button-block">Desloguear</button>
+        </div>
+        <div id="perfilLoginRegister-container2" ng-if="modalState == 'Login'">
+            <form id="login-form3" class="list">
+            <ion-list id="login-list4">
+                <label class="item item-input" id="login-input2" name="loginMail">
+                    <span class="input-label">E-mail</span>
+                    <input ng-model="loginData.usermail" type="text" placeholder="">
+                </label>
+                <label class="item item-input" id="login-input3" name="loginPassword">
+                    <span class="input-label">Contraseña</span>
+                    <input ng-model="loginData.password" type="password" placeholder="">
+                </label>
+            </ion-list>
+            <div class="spacer" style="height: 40px;"></div>
+            <button id="login-button3" ng-disabled="!loginData.usermail || !loginData.password" ng-click="doLogin()" class="button button-balanced  button-block icon ion-android-checkbox-outline">Log in</button>
+            <button class="button button-block button-dark" ng-disabled="!loginData.username" ng-click="resetPassword()">Olvide mi Password</button>
+            <button id="login-button10" ng-click="loginAdmin()" class="button button-assertive  button-block icon ion-android-clipboard">Login como Administrador</button>
+            <button id="login-button9" ng-click="loginJugadorUno()" class="button button-royal  button-block icon ion-android-contact">Login como Jugador 1</button>
+            <button id="login-button9" ng-click="loginJugadorDos()" class="button button-royal  button-block icon ion-android-contact">Login como Jugador 2</button>
+            <button ng-click="goToRegister()" id="login-button4" class="button button-light  button-block button-outline">Registrar un nuevo usuario</button>
+        </form>
+        </div>
+        <div id="perfilLoginRegister-container3" ng-if="modalState == 'Register'">
+            <form id="register-form4" class="list">
+            <ion-list id="register-list5">
+                <label class="item item-input" id="register-input4" name="registerName">
+                    <span class="input-label">Nombre de Usuario</span>
+                    <input ng-model="registerData.username" type="text" placeholder="">
+                </label>
+                <label class="item item-input" id="register-input5" name="registerMail">
+                    <span class="input-label">E-mail</span>
+                    <input ng-model="registerData.usermail" type="text" placeholder="">
+                </label>
+                <label class="item item-input" id="register-input6" name="registerPass">
+                    <span class="input-label">Contraseña</span>
+                    <input ng-model="registerData.password" type="text" placeholder="">
+                </label>
+                <label class="item item-input" id="register-input7" name="registerPassC">
+                    <span class="input-label">Repetir Contraseña</span>
+                    <input ng-model="registerData.passwordC" type="text" placeholder="">
+                </label>
+            </ion-list>
+            <button ng-click="doRegister()" ng-disabled="!registerData.usermail || !registerData.password || !registerData.passwordC || (registerData.password != registerData.passwordC)" id="register-button5" class="button button-dark  button-block">Registrarse</button>
+            <button ng-click="goToLogin()" id="register-button6" class="button button-light  button-block button-outline">Volver al Login</button>
+        </form>
+        </div>
+    </ion-content>
+</ion-view>

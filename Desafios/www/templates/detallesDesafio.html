@@ -1,0 +1,24 @@
+<ion-view title="Detalles Desafio" hide-back-button="false" cache-view="false" id="page6">
+  <ion-nav-buttons side="left" class="has-header">
+    <button class="button button-icon icon ion-ios-arrow-back" ng-click="GoBack()"></button>
+  </ion-nav-buttons>
+    <ion-content padding="true" style="background: url(img/Background.jpg) no-repeat center;background-size:cover;text-align:center;" class="has-header" >
+	    <h3 id="detallesDesafio-heading5" style="color:#FFFFFF;">{{des.titulo}}</h3>
+	    <h4 id="detallesDesafio-heading6" style="color:#FFFFFF;">Desafio por: {{des.creador.userName}}</h4>
+	    <div id="detallesDesafio-markdown2">
+	      <p style="color:#FFFFFF;">{{des.detalle}}</p>
+	    </div>
+	    <h4 id="detallesDesafio-heading7" style="color:#FFFFFF;">Fecha de Inicio: {{fechaInicioReal}}</h4>
+	    <h4 id="detallesDesafio-heading8" style="color:#FFFFFF;">Fecha de Fin: {{fechaFinReal}}</h4>
+	    <h1 id="detallesDesafio-heading9" style="color:#FFFFFF;">Valor: ${{des.valorApuesta}}</h1>
+
+	    <button id="detallesDesafio-button3" ng-show="(!user.isAdmin() && des.estado == 'Available' && (des.creador.userUUID != user.getUUID()))" ng-click="AceptarDesafio()" style="color:#FFFFFF;" class="button button-balanced  button-block icon ion-android-checkmark-circle"> Aceptar Desafio</button>
+	    <button id="detallesDesafio-button4" ng-show="(des.estado == 'Available' && ((!user.isAdmin() && des.creador.userUUID == user.getUUID()) || (user.isAdmin())) )" ng-disabled="true" style="font-weight:600;" class="button button-balanced  button-block button-outline">ESPERANDO CONTRINCANTE</button>
+	    <button id="detallesDesafio-button4" ng-show="(des.estado == 'Accepted')" ng-disabled="true" style="font-weight:600;" class="button button-assertive  button-block button-outline">DESAFIO EN PROGRESO</button>
+	    <button id="detallesDesafio-button4" ng-show="(des.valorApuesta <= user.GetCredits())" ng-disabled="true" style="font-weight:600;" class="button button-assertive  button-block button-outline">CREDITOS INSUFICIENTES</button>
+	    <button id="detallesDesafio-button4" ng-show="(!user.isAdmin() && des.estado == 'Checking')" ng-disabled="true" style="font-weight:600;" class="button button-royal  button-block button-outline">PENDIENTE DE VERIFICACION</button>
+	    <button id="detallesDesafio-button4" ng-show="(des.estado == 'Finished')" ng-disabled="true" style="font-weight:600;" class="button button-royal  button-block button-outline">DESAFIO FINALIZADO</button>
+	    <button id="detallesDesafio-button5" ng-show="(user.isAdmin() && (des.estado == 'Checking' || des.estado == 'Accepted'))" ng-click="CompletarDesafio()" class="button button-balanced  button-block">Desafio Conseguido</button>
+	    <button id="detallesDesafio-button6" ng-show="(user.isAdmin() && (des.estado == 'Checking' || des.estado == 'Accepted'))" ng-click="FallarDesafio()" class="button button-assertive  button-block">Desafio Fallado</button>
+	</ion-content>
+</ion-view>

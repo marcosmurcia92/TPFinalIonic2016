@@ -1,0 +1,10 @@
+<ion-view title="Desafios Aceptados" hide-back-button="true" cache-view="false" id="page5" style="background-color:#FFFFFF;">
+    <ion-content padding="true" style="background: url(img/Background.jpg) no-repeat center;background-size:cover;" class="has-header">
+    	<ion-list id="listaDeDesafios-list3">
+    		<h2 ng-if="cantidadDesafios == 0">Todavia no tienes ningun desafío aceptado. Crea uno nuevo o acepta uno en la Lista de Desafíos.</h2>
+            <ion-item ng-repeat="d in DesafiosDisponibles" class="dark" id="listaDeDesafios-list-item7" ng-click="IrAlDesafio(d)">{{d.titulo}}
+                <span class="item-note">${{d.valorApuesta}}</span>
+            </ion-item>
+        </ion-list>
+	</ion-content>
+</ion-view>

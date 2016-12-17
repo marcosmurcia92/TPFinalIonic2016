@@ -1,0 +1,30 @@
+<ion-view title="Crear Desafio" hide-back-button="true" cache-view="false" id="page3">
+    <ion-content padding="true" style="background: url(img/Background.jpg) no-repeat center;background-size:cover;" class="has-header">
+    	<form id="formCrear" class="list" name="formCrear">
+            <label class="item item-input" id="crearDesafio-input1" name="desafioTitle">
+                <span class="input-label">Titulo</span>
+                <input type="text" ng-model="nuevoDesafioData.titulo" placeholder="Mi fabuloso desafio" required>
+            </label>
+            <div class="spacer" style="width: 300px; height: 10px;"></div>
+            <label class="item item-input" id="crearDesafio-textarea1" name="desafioDesc">
+                <span class="input-label">Detalle</span>
+                <textarea id="detalleArea" ng-model="nuevoDesafioData.detalle" ng-change="updateTextArea('detalleArea')" placeholder="Apuesto XXX a que..." required></textarea>
+            </label>
+            <div class="spacer" style="width: 300px; height: 10px;"></div>
+            <label class="item item-input" id="crearDesafio-input8" name="desafioInicio">
+                <span class="input-label">Fecha Inicio</span>
+                <input type="date" ng-model="nuevoDesafioData.fechaInicio" placeholder="" required>
+            </label>
+            <div class="spacer" style="width: 300px; height: 10px;"></div>
+            <label class="item item-input" id="crearDesafio-input9" name="desafioFin">
+                <span class="input-label">Fecha Fin</span>
+                <input type="date" ng-model="nuevoDesafioData.fechaFin" placeholder="" required>
+            </label>
+            <div class="spacer" style="width: 300px; height: 10px;"></div>
+            <ion-item class="range range-positive" id="crearDesafio-range2">Apuesta ${{nuevoDesafioData.valorApuesta}}
+                <input type="range" min="0" max="100" step="1" ng-model="nuevoDesafioData.valorApuesta" name="desafioApuesta" required>
+            </ion-item>
+        </form>
+        <button id="crearDesafio-button2" ng-disabled="(nuevoDesafioData.titulo == '' || nuevoDesafioData.detalle == '' || nuevoDesafioData.valorApuesta == 0)" ng-click="createDesafio()" class="button button-balanced  button-block icon ion-android-send">Generar Desafio</button>
+	</ion-content>
+</ion-view>
